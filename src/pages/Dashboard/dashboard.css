@@ -1,0 +1,58 @@
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.card {
+  display: flex;
+  background: white;
+  padding: 1.5rem;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 0.5rem;
+}
+
+.icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  display: block;
+  background: green;
+  border-radius: 50%;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.card p {
+  font-size: 1.75rem;
+}
+
+.area-chart {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.charts {
+  background: white;
+  width: 100%;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.top-endpoints {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+}

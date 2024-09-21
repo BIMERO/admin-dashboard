@@ -1,0 +1,35 @@
+.navbar {
+  box-shadow: 8px -4px 14px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-info p {
+  font-size: 14px;
+}
+.menu {
+  display: none;
+}
+
+@media screen and (max-width: 1023px) {
+  .menu {
+    display: block;
+  }
+}
