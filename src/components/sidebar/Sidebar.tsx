@@ -10,7 +10,6 @@ import { BiSupport } from "react-icons/bi";
 import { MdOutlineNotificationImportant } from "react-icons/md";
 import { AiOutlineAudit } from "react-icons/ai";
 import { LiaKeySolid } from "react-icons/lia";
-import { TbLogs } from "react-icons/tb";
 
 const Sidebar = ({ isOpen }: any) => {
   return (
@@ -33,10 +32,11 @@ const Sidebar = ({ isOpen }: any) => {
               to={"logs"}
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              <TbLogs style={{ fontSize: "24px" }} />
-              APILogs
+              <VscListSelection style={{ fontSize: "24px" }} />
+              API Call Logs
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to={"users"}
@@ -73,15 +73,7 @@ const Sidebar = ({ isOpen }: any) => {
               API Settings
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to={"api-call-logs"}
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              <VscListSelection style={{ fontSize: "24px" }} />
-              API Call Logs
-            </NavLink>
-          </li>
+
           <li>
             <NavLink
               to={"notifications"}

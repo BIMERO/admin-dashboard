@@ -1,5 +1,4 @@
 import React from "react";
-import { apiLogsData } from "./apiLogData";
 import {
   Table,
   TableBody,
@@ -8,13 +7,13 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { auditData } from "./auditData";
 import moment from "moment";
-import "./apilogs.css";
 
-const ApiLogs = () => {
+const AuditLog = () => {
   return (
     <section>
-      <h1>API Call Logs</h1>
+      <h1>Audit Logs</h1>
 
       <div className="table">
         <TableContainer>
@@ -25,25 +24,37 @@ const ApiLogs = () => {
                   align="left"
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
-                  User ID
+                  Log ID
                 </TableCell>
                 <TableCell
                   align="left"
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
-                  Endpoints
+                  Action Type
                 </TableCell>
                 <TableCell
                   align="left"
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
-                  Method
+                  User
                 </TableCell>
                 <TableCell
                   align="left"
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
-                  Response Time
+                  Target Resource
+                </TableCell>
+                <TableCell
+                  align="left"
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                >
+                  Date, Time
+                </TableCell>
+                <TableCell
+                  align="left"
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                >
+                  IP Address
                 </TableCell>
                 <TableCell
                   align="left"
@@ -55,7 +66,7 @@ const ApiLogs = () => {
                   align="left"
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
-                  Last Login
+                  Details
                 </TableCell>
                 <TableCell
                   align="left"
@@ -66,7 +77,7 @@ const ApiLogs = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {apiLogsData.map((user: any) => (
+              {auditData.map((user: any) => (
                 <TableRow
                   key={user.id}
                   sx={{
@@ -74,13 +85,18 @@ const ApiLogs = () => {
                   }}
                 >
                   <TableCell align="left">{user.id}</TableCell>
-                  <TableCell align="left">{user.endpoint}</TableCell>
-                  <TableCell align="left">{user.method}</TableCell>
-                  <TableCell align="left">{user.responseTime}</TableCell>
-                  <TableCell align="left">{user.status}</TableCell>
+                  <TableCell align="left">{user.actionType}</TableCell>
+                  <TableCell align="left">{user.user}</TableCell>
+                  <TableCell align="left">{user.targetResource}</TableCell>
                   <TableCell align="left">
-                    {moment(user.timestamp).format("YYYY/MM/DD, HH:mm")}
+                    {moment(user.dateTime).format("YYYY/MM/DD, HH:mm")}
                   </TableCell>
+                  <TableCell align="left">{user.ipAddress}</TableCell>
+
+                  <TableCell align="left">{user.status}</TableCell>
+
+                  <TableCell align="left">{user.details}</TableCell>
+
                   <TableCell
                     align="left"
                     // onClick={() => handleDropdown(user.id)}
@@ -114,4 +130,4 @@ const ApiLogs = () => {
   );
 };
 
-export default ApiLogs;
+export default AuditLog;

@@ -1,0 +1,17 @@
+.reports h1 {
+  margin-bottom: 1.5rem;
+}
+
+.reports-container {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.reports-option {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}

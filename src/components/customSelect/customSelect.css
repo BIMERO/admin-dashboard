@@ -1,0 +1,24 @@
+.custom-select-container label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.custom-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.dropdown-list {
+  line-height: 2rem;
+  background: white;
+  box-shadow: 1px 1px 3px rgba(1, 1, 1, 0.2);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}

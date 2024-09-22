@@ -6,11 +6,12 @@ import Navbar from "./components/navbar/Navbar";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ApiLogs from "./pages/apiLogs/ApiLogs";
 import APIManagement from "./pages/apiManagement/APIManagement";
-import Users from "./pages/Users/Users";
 import APIKeys from "./pages/apiKeys/APIKeys";
 import Settings from "./pages/settings/Settings";
 import Notifications from "./pages/notifications/Notifications";
 import Reports from "./pages/reports/Reports";
+import UserManagement from "./pages/Users/Index";
+import AuditLog from "./pages/audit/AuditLog";
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -30,13 +31,14 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/logs" element={<ApiLogs />} />
               <Route path="/api-management" element={<APIManagement />} />
-              <Route path="/users" element={<Users />} />
+              <Route path="/users" element={<UserManagement />} />
               <Route path="/api-keys" element={<APIKeys />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/support" element={<Reports />} />
               <Route path="/api-call-logs" element={<Reports />} />
+              <Route path="/audit-logs" element={<AuditLog />} />
             </Routes>
           </div>
         </div>
