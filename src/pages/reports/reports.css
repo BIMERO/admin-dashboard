@@ -8,10 +8,27 @@
   border-radius: 0.5rem;
 }
 
-.reports-option {
+.report-options {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.dates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+  max-width: 48%;
+}
+
+.charts-section {
+  margin-top: 2rem;
 }

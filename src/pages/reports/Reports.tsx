@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import "./reports.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ChartDisplay from "./ChartDisplay";
 import CustomSelect from "../../components/customSelect/CustomSelect";
+import ReactApexChart from "react-apexcharts";
+import { ApexOptions } from "apexcharts";
 
 const reportTypeoptions = [
   "API Usage Reports",
@@ -10,6 +13,11 @@ const reportTypeoptions = [
   "User Activity Reports",
   "Error Logs Reports",
 ];
+
+const methodOptions = ["GET", "POST", "PUT", "DELETE"];
+
+const reportOptions = ["CSV", "PDF", "Excel"];
+const statusOptions = ["Success", "Failed"];
 
 const Reports = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -20,6 +28,47 @@ const Reports = () => {
 
   const handleReportTypeSelect = (selectedOption: string) => {
     console.log("Selected option:", selectedOption);
+  };
+
+  const handleMethodSelect = (selectedOption: string) => {
+    console.log("Selected option:", selectedOption);
+  };
+
+  const handleReportFormatSelect = (selectedOption: string) => {
+    console.log("Selected option:", selectedOption);
+  };
+
+  const handleStatusSelect = (selectedOption: string) => {
+    console.log("Selected option:", selectedOption);
+  };
+
+  const series = [60, 25, 10, 5];
+
+  const options: ApexOptions = {
+    chart: {
+      type: "pie",
+    },
+    labels: ["GET", "POST", "PUT", "DELETE"],
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+    title: {
+      text: "HTTP Methods Distribution",
+      align: "center",
+      style: {
+        fontSize: "16px",
+      },
+    },
   };
 
   return (
@@ -37,7 +86,37 @@ const Reports = () => {
             />
           </div>
 
-          <div className="inputs" style={{ width: "100%", maxWidth: "50%" }}>
+          <div className="inputs" style={{ width: "100%", maxWidth: "48%" }}>
+            <label htmlFor="apiEndpoint">API Endpoint:</label>
+            <input
+              type="text"
+              id="apiEndpoint"
+              placeholder="Enter API Endpoint"
+            />
+          </div>
+        </div>
+
+        <div
+          className="inputs"
+          style={{ width: "100%", marginBottom: "1.25rem" }}
+        >
+          <label htmlFor="timeFrame">Time Frame:</label>
+          <div className="dates">
+            <DatePicker
+              selected={startDate}
+              onChange={(date: Date | null) => setStartDate(date)}
+              placeholderText="Start Date"
+            />
+            <DatePicker
+              selected={endDate}
+              onChange={(date: Date | null) => setEndDate(date)}
+              placeholderText="End Date"
+            />
+          </div>
+        </div>
+
+        <div className="report-options">
+          <div className="inputs" style={{ width: "100%", maxWidth: "48%" }}>
             <label htmlFor="apiEndpoint">API Endpoint:</label>
             <input
               type="text"
@@ -46,85 +125,61 @@ const Reports = () => {
             />
           </div>
 
-          {/* <div className="option-group">
-          <label htmlFor="timeFrame">Time Frame:</label>
-          <DatePicker
-            selected={startDate}
-            onChange={(date: Date | null) => setStartDate(date)}
-            placeholderText="Start Date"
-          />
-          <DatePicker
-            selected={endDate}
-            onChange={(date: Date | null) => setEndDate(date)}
-            placeholderText="End Date"
-          />
+          <div style={{ width: "100%", maxWidth: "48%" }}>
+            <CustomSelect
+              options={methodOptions}
+              placeholder="Select Report Type"
+              label="Methods:"
+              onSelect={handleMethodSelect}
+            />
+          </div>
         </div>
 
-        <div className="option-group">
-          <label htmlFor="apiEndpoint">API Endpoint:</label>
-          <input
-            type="text"
-            id="apiEndpoint"
-            placeholder="Enter API Endpoint"
-          />
+        <div className="report-options">
+          <div style={{ width: "100%", maxWidth: "48%" }}>
+            <CustomSelect
+              options={statusOptions}
+              placeholder="Select Report Type"
+              label="Status:"
+              onSelect={handleStatusSelect}
+            />
+          </div>
+          <div style={{ width: "100%", maxWidth: "48%" }}>
+            <CustomSelect
+              options={reportOptions}
+              placeholder="Select Report Type"
+              label="Export Format:"
+              onSelect={handleReportFormatSelect}
+            />
+          </div>
         </div>
-
-        <div className="option-group">
-          <label htmlFor="method">Methods:</label>
-          <select id="method">
-            <option>GET</option>
-            <option>POST</option>
-            <option>PUT</option>
-            <option>DELETE</option>
-          </select>
-        </div>
-
-        <div className="option-group">
-          <label htmlFor="status">Status:</label>
-          <select id="status">
-            <option>Success</option>
-            <option>Failure</option>
-            <option>Timeout</option>
-          </select>
-        </div>
-
-        <div className="option-group">
-          <label htmlFor="exportFormat">Export Format:</label>
-          <select id="exportFormat">
-            <option>PDF</option>
-            <option>CSV</option>
-            <option>Excel</option>
-          </select>
-        </div>
-
         <div className="option-group">
           <label htmlFor="includeGraphs">
             <input type="checkbox" id="includeGraphs" /> Include Graphs
           </label>
-        </div> */}
         </div>
 
-        {/* <div className="charts-section">
-        <ChartDisplay
-          chartType="bar"
-          data={mockData}
-          categories={mockCategories}
-          title="API Calls Over Time"
-        />
-        <ChartDisplay
-          chartType="line"
-          data={mockData}
-          categories={mockCategories}
-          title="Average Response Time"
-        />
-        <ChartDisplay
-          chartType="pie"
-          data={[45, 55]}
-          categories={["Success", "Failure"]}
-          title="API Success vs Failure"
-          height={350}
-        />
-      </div> */}
+        <div className="charts-section">
+          <ChartDisplay
+            chartType="bar"
+            data={mockData}
+            categories={mockCategories}
+            title="API Calls Over Time"
+          />
+          <ChartDisplay
+            chartType="line"
+            data={mockData}
+            categories={mockCategories}
+            title="Average Response Time"
+          />
+          <ReactApexChart
+            options={options}
+            series={series}
+            type="pie"
+            height={350}
+            width={380}
+          />
+        </div>
       </div>
     </section>
   );

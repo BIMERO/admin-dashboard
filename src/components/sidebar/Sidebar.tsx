@@ -11,7 +11,13 @@ import { MdOutlineNotificationImportant } from "react-icons/md";
 import { AiOutlineAudit } from "react-icons/ai";
 import { LiaKeySolid } from "react-icons/lia";
 
-const Sidebar = ({ isOpen }: any) => {
+const Sidebar = ({
+  isOpen,
+  toggleSidebar,
+}: {
+  isOpen: boolean;
+  toggleSidebar: () => void;
+}) => {
   return (
     <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
       <div>
@@ -22,6 +28,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"/"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <CiGrid41 style={{ fontSize: "24px" }} />
               Dashboard
@@ -31,6 +38,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"logs"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <VscListSelection style={{ fontSize: "24px" }} />
               API Call Logs
@@ -41,6 +49,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"users"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <LuUsers style={{ fontSize: "24px" }} />
               Users
@@ -50,6 +59,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"api-management"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <VscListSelection style={{ fontSize: "24px" }} />
               API Management
@@ -59,6 +69,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"api-keys"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <LiaKeySolid style={{ fontSize: "24px" }} />
               API Keys
@@ -68,6 +79,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"settings"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <IoSettingsOutline style={{ fontSize: "24px" }} />
               API Settings
@@ -78,6 +90,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"notifications"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <MdOutlineNotificationImportant style={{ fontSize: "24px" }} />
               Alerts & Notifications
@@ -87,6 +100,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"reports"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <PiFileTextBold style={{ fontSize: "24px" }} />
               Reports
@@ -96,6 +110,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"support"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <BiSupport style={{ fontSize: "24px" }} />
               Support
@@ -105,6 +120,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"audit-logs"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <AiOutlineAudit style={{ fontSize: "24px" }} />
               Audit Logs
@@ -114,6 +130,7 @@ const Sidebar = ({ isOpen }: any) => {
             <NavLink
               to={"logout"}
               className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={toggleSidebar}
             >
               <LuLogOut style={{ fontSize: "24px" }} />
               Logout

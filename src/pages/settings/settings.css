@@ -1,0 +1,27 @@
+.settings-container {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 8px;
+  height: 100%;
+  min-height: 100vh;
+  margin-top: 1.5rem;
+  overflow: hidden;
+}
+
+.settings-container .settings-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: scroll;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.settings-container .settings-tabs .active {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4313ff;
+}

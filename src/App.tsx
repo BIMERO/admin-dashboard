@@ -23,7 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="app-container">
-        <Sidebar isOpen={isSidebarOpen} />
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="main-content">
           <Navbar toggleSidebar={toggleSidebar} />
           <div className="pages">
