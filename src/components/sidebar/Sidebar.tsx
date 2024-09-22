@@ -26,7 +26,7 @@ const Sidebar = ({
         <ul>
           <li>
             <NavLink
-              to={"/"}
+              to={"/dashboard"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -36,7 +36,7 @@ const Sidebar = ({
           </li>
           <li>
             <NavLink
-              to={"logs"}
+              to={"/logs"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -47,7 +47,7 @@ const Sidebar = ({
 
           <li>
             <NavLink
-              to={"users"}
+              to={"/users"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -57,7 +57,7 @@ const Sidebar = ({
           </li>
           <li>
             <NavLink
-              to={"api-management"}
+              to={"/api-management"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -67,7 +67,7 @@ const Sidebar = ({
           </li>
           <li>
             <NavLink
-              to={"api-keys"}
+              to={"/api-keys"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -77,7 +77,7 @@ const Sidebar = ({
           </li>
           <li>
             <NavLink
-              to={"settings"}
+              to={"/settings"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -88,7 +88,7 @@ const Sidebar = ({
 
           <li>
             <NavLink
-              to={"notifications"}
+              to={"/notifications"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -98,7 +98,7 @@ const Sidebar = ({
           </li>
           <li>
             <NavLink
-              to={"reports"}
+              to={"/reports"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -108,7 +108,7 @@ const Sidebar = ({
           </li>
           <li>
             <NavLink
-              to={"support"}
+              to={"/support"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
@@ -118,7 +118,7 @@ const Sidebar = ({
           </li>
           <li>
             <NavLink
-              to={"audit-logs"}
+              to={"/audit-logs"}
               className={({ isActive }) => (isActive ? "active" : "")}
               onClick={toggleSidebar}
             >
