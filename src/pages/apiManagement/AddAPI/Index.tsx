@@ -81,12 +81,14 @@ const AddNewApi = ({
           <span
             onClick={() => handleTabClick(0)}
             className={activeTab === 0 ? "active" : ""}
+            style={{ cursor: "pointer" }}
           >
             General
           </span>{" "}
           <span
             onClick={() => handleTabClick(1)}
             className={activeTab === 1 ? "active" : ""}
+            style={{ cursor: "pointer" }}
           >
             Headers
           </span>
@@ -94,6 +96,7 @@ const AddNewApi = ({
             <span
               onClick={() => handleTabClick(2)}
               className={activeTab === 2 ? "active" : ""}
+              style={{ cursor: "pointer" }}
             >
               Body
             </span>
@@ -101,6 +104,7 @@ const AddNewApi = ({
           <span
             onClick={() => handleTabClick(3)}
             className={activeTab === 3 ? "active" : ""}
+            style={{ cursor: "pointer" }}
           >
             Authorization
           </span>

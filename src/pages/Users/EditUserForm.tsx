@@ -29,8 +29,8 @@ const EditUserForm = ({
   ];
   const roleOptions = [
     { label: "Admin", value: "Admin" },
-    { label: "User", value: "User" },
-    { label: "Admin", value: "Admin" },
+    { label: "Viewer", value: "Viewer" },
+    { label: "Developer", value: "Developer" },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {

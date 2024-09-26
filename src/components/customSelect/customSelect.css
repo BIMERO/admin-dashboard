@@ -4,6 +4,7 @@
 .custom-select-container label {
   font-size: 0.875rem;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .custom-select {
