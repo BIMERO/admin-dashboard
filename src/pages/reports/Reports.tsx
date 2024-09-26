@@ -14,10 +14,24 @@ const reportTypeoptions = [
   "Error Logs Reports",
 ];
 
-const methodOptions = ["GET", "POST", "PUT", "DELETE"];
+const methodOptions = [
+  { label: "GET", value: "GET" },
+  { label: "POST", value: "POST" },
+  { label: "PUT", value: "PUT" },
+  { label: "DELETE", value: "DELETE" },
+  { label: "PATCH", value: "PATCH" },
+];
 
-const reportOptions = ["CSV", "PDF", "Excel"];
-const statusOptions = ["Success", "Failed"];
+const reportOptions = [
+  { label: "CSV", value: "CSV" },
+  { label: "PDF", value: "PDF" },
+  { label: "Excel", value: "Excel" },
+];
+
+const statusOptions = [
+  { label: "Success", value: "Success" },
+  { label: "Failure", value: "Failure" },
+];
 
 const Reports = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -79,7 +93,7 @@ const Reports = () => {
         <div className="report-options">
           <div style={{ width: "100%", maxWidth: "48%" }}>
             <CustomSelect
-              options={reportTypeoptions}
+              options={reportOptions}
               placeholder="Select Report Type"
               label="Report Type:"
               onSelect={handleReportTypeSelect}

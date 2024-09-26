@@ -25,7 +25,11 @@ const UserManagement = () => {
       {addUser ? (
         <AddUser back={back} saveUser={handleSaveUser} />
       ) : (
-        <Users allusers={allUsers} onAddUser={handleAddUser} />
+        <Users
+          allusers={allUsers}
+          onAddUser={handleAddUser}
+          setAllUsers={setAllUsers}
+        />
       )}
     </div>
   );

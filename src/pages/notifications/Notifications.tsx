@@ -91,7 +91,9 @@ const Notifications = () => {
                   >
                     <TableCell align="left">{user.id}</TableCell>
                     <TableCell align="left">{user.message}</TableCell>
-                    <TableCell align="left">{user.type}</TableCell>
+                    <TableCell align="left">
+                      <p>{user.type}</p>
+                    </TableCell>
                     <TableCell align="left">{user.recipients}</TableCell>
                     <TableCell align="left">{user.deliveryMethod}</TableCell>
                     <TableCell align="left">{user.status}</TableCell>

@@ -1,3 +1,7 @@
+.api_management h1 {
+  margin-bottom: 2.5rem;
+}
+
 .dropdown {
   background: white;
   padding: 1rem;
@@ -8,7 +12,7 @@
   position: absolute;
   z-index: 10;
   top: 2.5rem;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0);
+  box-shadow: 2px 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .dropdown p {
@@ -36,6 +40,7 @@ form {
 .inputs {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1.25rem;
 }
 
 .inputs label {
@@ -60,31 +65,6 @@ form {
   outline: none;
 }
 
-.get-method {
-  color: lightgreen !important;
-  font-weight: 600;
-}
-
-.post-method {
-  color: lightblue !important;
-  font-weight: 600;
-}
-
-.put-method {
-  color: black !important;
-  font-weight: 600;
-}
-
-.delete-method {
-  color: lightcoral !important;
-  font-weight: 600;
-}
-
-.patch-method {
-  color: lightgray !important;
-  font-weight: 600;
-}
-
 .save-btn {
   background: #4313ff;
   color: white;
@@ -94,4 +74,60 @@ form {
   width: 100%;
   border-radius: 8px;
   padding: 14px 12px;
+}
+
+.api-tabs {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  overflow-x: scroll;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.api-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.api-tabs .active {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4313ff;
+}
+
+.headers-container .input-flex {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.headers-container .input-flex .inputs {
+  max-width: 500px;
+  width: 100%;
+}
+
+.header-btn {
+  border: none;
+  outline: none;
+  background: #4313ff;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  font-weight: 600;
+  justify-content: center;
+  max-width: 300px;
+  width: 100%;
+}
+
+.basic-auth-inputs {
+  width: 100%;
+  max-width: 500px;
 }

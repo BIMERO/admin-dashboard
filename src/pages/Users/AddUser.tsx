@@ -50,28 +50,59 @@ const AddUser = ({
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="inputs">
-          <label className="">FullName</label>
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={newUser.fullName}
-            onChange={handleInputChange}
-            required
-          />
+        <div className="flex-inputs">
+          <div className="inputs">
+            <label className="">FullName</label>
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Full Name"
+              value={newUser.fullName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="inputs">
+            <label className="">Phone Number</label>
+            <input
+              type="number"
+              name="phoneNumber"
+              placeholder="Phone Number"
+            />
+          </div>
         </div>
 
-        <div className="inputs">
-          <label className="">Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={newUser.email}
-            onChange={handleInputChange}
-            required
-          />
+        <div className="flex-inputs">
+          <div className="inputs">
+            <label className="">Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={newUser.email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="inputs">
+            <label className="">Address</label>
+            <input type="text" name="address" placeholder="Home Address" />
+          </div>
+        </div>
+
+        <div className="flex-inputs">
+          <div className="inputs">
+            <label className="">Password</label>
+            <input type="password" name="password" placeholder="Password" />
+          </div>
+          <div className="inputs">
+            <label className="">Confirm Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+            />
+          </div>
         </div>
 
         <div className="custom-dropdown">
@@ -138,9 +169,14 @@ const AddUser = ({
           )}
         </div>
 
-        <button type="submit" className="save-btn">
-          Save
-        </button>
+        <div className="btns">
+          <button type="submit" className="save-btn">
+            Save
+          </button>
+          <button type="reset" className="save-btn">
+            Reset
+          </button>
+        </div>
       </form>
     </div>
   );

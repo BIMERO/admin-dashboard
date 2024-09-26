@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import "./customSelect.css";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
+interface Option {
+  label: string;
+  value: string;
+}
+
 interface CustomSelectProps {
-  options: string[];
-  defaultOption?: string;
+  options: Option[];
+  defaultOption?: Option;
   onSelect: (value: string) => void;
   label?: string;
   placeholder?: string;
+  value?: string;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -16,15 +22,16 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   onSelect,
   label,
   placeholder = "Select an option",
+  value,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+  const [selectedOption, setSelectedOption] = useState<Option | undefined>(
     defaultOption
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSelectOption = (option: string) => {
+  const handleSelectOption = (option: Option) => {
     setSelectedOption(option);
-    onSelect(option);
+    onSelect(option.value); // Use option.value instead of option directly
     setIsDropdownOpen(false);
   };
 
@@ -36,7 +43,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         <span className="selected-option">
-          {selectedOption ? selectedOption : placeholder}
+          {selectedOption ? selectedOption.label : placeholder}
         </span>
         <span className={`${isDropdownOpen ? "open" : ""}`}>
           <MdOutlineKeyboardArrowDown style={{ fontSize: "1rem" }} />
@@ -49,11 +56,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             <li
               key={index}
               className={`dropdown-item ${
-                option === selectedOption ? "selected" : ""
+                option.value === selectedOption?.value ? "selected" : ""
               }`}
               onClick={() => handleSelectOption(option)}
             >
-              {option}
+              {option.label}
             </li>
           ))}
         </ul>

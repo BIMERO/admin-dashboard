@@ -30,6 +30,8 @@ const Global = () => {
             <label>Pagination Settings</label>
             <input type="number" placeholder="Enter default page size" />
           </div>
+
+          <button>Save</button>
         </form>
       </div>
     </section>

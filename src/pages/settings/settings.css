@@ -44,3 +44,15 @@
   max-width: 600px;
   width: 100%;
 }
+
+.global-form button {
+  border: none;
+  outline: none;
+  background: #4313ff;
+  color: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 340px;
+}

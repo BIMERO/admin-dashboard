@@ -11,6 +11,17 @@ body {
   font-size: 1rem;
 }
 
+.css-174q18p-MuiTableCell-root,
+.css-snl1f5-MuiTableCell-root,
+.css-1t7lzbz-MuiTableCell-root,
+.css-10ukr6t-MuiTableCell-root {
+  font-family: "Montserrat", sans-serif !important;
+}
+
+button {
+  font-family: "Montserrat", sans-serif;
+}
+
 ul {
   list-style: none;
 }
@@ -18,4 +29,67 @@ ul {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+.get-method {
+  color: #60affe;
+  font-weight: 600;
+  background: rgba(96, 175, 254, 0.1);
+  text-align: center;
+  border-radius: 32px;
+  padding: 2px 0;
+}
+
+.post-method {
+  color: #4acb91;
+  font-weight: 600;
+  background: rgba(74, 203, 145, 0.1);
+  text-align: center;
+  border-radius: 32px;
+  padding: 2px 0;
+}
+
+.put-method {
+  color: #fca12f;
+  font-weight: 600;
+  background: rgba(252, 161, 47, 0.1);
+  text-align: center;
+  border-radius: 32px;
+  padding: 2px 0;
+}
+
+.delete-method {
+  color: #fa3e3d;
+  font-weight: 600;
+  background: rgba(250, 62, 61, 0.1);
+  text-align: center;
+  border-radius: 32px;
+  padding: 2px 0;
+}
+
+.patch-method {
+  color: #4fe2c2;
+  font-weight: 600;
+  background: rgba(79, 226, 194, 0.1);
+  text-align: center;
+  border-radius: 32px;
+  padding: 2px 0;
+}
+
+.success {
+  color: #00c781;
+  font-weight: 600;
+  background: rgba(0, 199, 129, 0.1);
+  text-align: center;
+  border-radius: 32px;
+  padding: 2px 0;
+}
+
+.failed {
+  color: #ff4040;
+  font-weight: 600;
+  background: rgba(255, 64, 64, 0.1);
+  text-align: center;
+  border-radius: 32px;
+  padding: 2px 0;
 }

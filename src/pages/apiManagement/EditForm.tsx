@@ -21,9 +21,10 @@ interface APIManagementProps {
 interface EditFormProps {
   row: APIManagementProps;
   onSave: (updatedRow: APIManagementProps) => void;
+  onClose: () => void;
 }
 
-const EditForm: React.FC<EditFormProps> = ({ row, onSave }) => {
+const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
   const [formData, setFormData] = useState<APIManagementProps>(row);
 
   const handleChange = (
@@ -59,104 +60,105 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave }) => {
   };
 
   return (
-    <div className="edit-form">
-      <form onSubmit={handleSave}>
-        <div className="inputs">
-          <label className="">Endpoint</label>
-          <input
-            type="text"
-            name="endpoint"
-            value={formData.endpoint}
-            onChange={handleChange}
-            className="w-full px-2 py-1 border rounded"
-          />
-        </div>
-        <div className="inputs">
-          <label className="">Method</label>
-          {/* <input
-            type="text"
-            name="method"
-            value={formData.method}
-            onChange={handleChange}
-            className="w-full px-2 py-1 border rounded"
-          /> */}
-          <select
-            name="method"
-            value={formData.method}
-            className="select"
-            onChange={handleChange}
-          >
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="DELETE">DELETE</option>
-            <option value="PATCH">PATCH</option>
-          </select>
-        </div>
-        <div className="inputs">
-          <label className="">Description</label>
-          <input
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full px-2 py-1 border rounded"
-          />
-        </div>
-        <div className="inputs">
-          <label>Headers</label>
-          {Object.entries(formData.headers).map(([key, value], index) => (
-            <div key={index} className="header-pair">
+    <section className="edit-user">
+      <div className="edit-user-modal">
+        <div className="edit-form">
+          <h2>Edit User</h2>
+          <form onSubmit={handleSave}>
+            <div className="inputs">
+              <label className="">Endpoint</label>
               <input
                 type="text"
-                placeholder="Header Key"
-                value={key}
-                style={{ marginBottom: "1rem" }}
-              />
-              <input
-                type="text"
-                placeholder="Header Value"
-                value={value}
-                onChange={(e) =>
-                  handleHeadersChange(index, key, e.target.value)
-                }
+                name="endpoint"
+                value={formData.endpoint}
+                onChange={handleChange}
+                className="w-full px-2 py-1 border rounded"
               />
             </div>
-          ))}
-        </div>
-        <div className="inputs">
-          <label>Payload (JSON/XML)</label>
-          <textarea
-            name="payload"
-            value={JSON.stringify(formData.payload, null, 2)}
-            onChange={handleChange}
-            rows={5}
-            cols={5}
-          />
-        </div>
-        <div className="inputs">
-          <label>Parameters</label>
-          {Object.entries(formData.parameters).map(([key, value], index) => (
-            <div key={index} className="param-pair">
+            <div className="inputs">
+              <label className="">Method</label>
+
+              <select
+                name="method"
+                value={formData.method}
+                className="select"
+                onChange={handleChange}
+              >
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+                <option value="PATCH">PATCH</option>
+              </select>
+            </div>
+            <div className="inputs">
+              <label className="">Description</label>
               <input
-                type="text"
-                placeholder="Parameter Key"
-                value={key}
-                readOnly
-              />
-              <input
-                type="text"
-                placeholder="Parameter Value"
-                value={value}
-                onChange={(e) => handleParamsChange(key, e.target.value)}
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="w-full px-2 py-1 border rounded"
               />
             </div>
-          ))}
+            <div className="inputs">
+              <label>Headers</label>
+              {Object.entries(formData.headers).map(([key, value], index) => (
+                <div key={index} className="header-pair">
+                  <input
+                    type="text"
+                    placeholder="Header Key"
+                    value={key}
+                    style={{ marginBottom: "1rem" }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Header Value"
+                    value={value}
+                    onChange={(e) =>
+                      handleHeadersChange(index, key, e.target.value)
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="inputs">
+              <label>Payload (JSON/XML)</label>
+              <textarea
+                name="payload"
+                value={JSON.stringify(formData.payload, null, 2)}
+                onChange={handleChange}
+                rows={5}
+                cols={5}
+              />
+            </div>
+            <div className="inputs">
+              <label>Parameters</label>
+              {Object.entries(formData.parameters).map(
+                ([key, value], index) => (
+                  <div key={index} className="param-pair">
+                    <input
+                      type="text"
+                      placeholder="Parameter Key"
+                      value={key}
+                      readOnly
+                    />
+                    <input
+                      type="text"
+                      placeholder="Parameter Value"
+                      value={value}
+                      onChange={(e) => handleParamsChange(key, e.target.value)}
+                    />
+                  </div>
+                )
+              )}
+            </div>
+            <button type="submit" className="save-btn">
+              Save
+            </button>
+          </form>
         </div>
-        <button type="submit" className="save-btn">
-          Save
-        </button>
-      </form>
-    </div>
+      </div>
+    </section>
   );
 };
 

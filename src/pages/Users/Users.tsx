@@ -12,22 +12,47 @@ import { FaUserPlus } from "react-icons/fa6";
 import moment from "moment";
 import EditUserForm from "./EditUserForm";
 import { User } from "../../../interfaces/User";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const Users = ({
   allusers,
+  setAllUsers,
   onAddUser,
 }: {
   allusers: User[];
+  setAllUsers: React.Dispatch<React.SetStateAction<User[]>>;
   onAddUser: () => void;
 }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [dropdown, setDropdown] = useState<number | null>(null);
 
-  const handleModal = () => {
-    setShowModal(true);
+  const handleDropdownToggle = (userId: number) => {
+    setDropdown(dropdown === userId ? null : userId);
+  };
+
+  const handleEdit = (user: User) => {
+    setSelectedUser(user);
+    setShowEditModal(true);
+    setDropdown(null);
+  };
+
+  const handleSaveEdit = (updatedUser: User) => {
+    setAllUsers((prevUsers) =>
+      prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    );
+    setShowEditModal(false);
+  };
+
+  const handleDelete = (userId: number) => {
+    setAllUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+    setDropdown(null);
   };
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
       <section>
         <h1>User Management</h1>
         <div className="user-mgt">
@@ -91,13 +116,8 @@ const Users = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {allusers.map((user: any) => (
-                    <TableRow
-                      key={user.id}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                    >
+                  {allusers.map((user) => (
+                    <TableRow key={user.id}>
                       <TableCell align="left">{user.id}</TableCell>
                       <TableCell align="left">{user.fullName}</TableCell>
                       <TableCell align="left">{user.email}</TableCell>
@@ -108,7 +128,6 @@ const Users = ({
                       </TableCell>
                       <TableCell
                         align="left"
-                        // onClick={() => handleDropdown(user.id)}
                         style={{
                           position: "relative",
                           cursor: "pointer",
@@ -117,17 +136,27 @@ const Users = ({
                           color: "#4318ff",
                           fontWeight: "bold",
                         }}
+                        onClick={() => handleDropdownToggle(user.id)}
                       >
                         View Details{" "}
-                        {/* <MdKeyboardArrowDown style={{ fontSize: "1.25rem" }} />
-                      {dropdown === user.id && (
-                        <>
+                        <MdKeyboardArrowDown style={{ fontSize: "1.25rem" }} />
+                        {dropdown === user.id && (
                           <div className="dropdown">
-                            <p onClick={() => handleEdit(user)}>Edit</p>
-                            <p onClick={() => handleDelete(user.id)}>Delete</p>
+                            <p onClick={() => handleEdit(user)}>
+                              <CiEdit />
+                              Edit
+                            </p>
+                            <p
+                              onClick={() => handleDelete(user.id)}
+                              style={{
+                                color: "red",
+                              }}
+                            >
+                              <RiDeleteBin6Line />
+                              Delete
+                            </p>
                           </div>
-                        </>
-                      )} */}
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -138,8 +167,14 @@ const Users = ({
         </div>
       </section>
 
-      {showModal && <EditUserForm />}
-    </>
+      {showEditModal && selectedUser && (
+        <EditUserForm
+          user={selectedUser}
+          onSave={handleSaveEdit}
+          onClose={() => setShowEditModal(false)}
+        />
+      )}
+    </div>
   );
 };
 

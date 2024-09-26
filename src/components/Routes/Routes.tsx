@@ -1,6 +1,6 @@
 import APIKeys from "../../pages/apiKeys/APIKeys";
 import ApiLogs from "../../pages/apiLogs/ApiLogs";
-import APIManagement from "../../pages/apiManagement/APIManagement";
+import APIManagementPage from "../../pages/apiManagement/Index";
 import AuditLog from "../../pages/audit/AuditLog";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import Notifications from "../../pages/notifications/Notifications";
@@ -18,7 +18,7 @@ export const RoutesData = [
     path: "/logs",
     element: <ApiLogs />,
   },
-  { path: "/api-management", element: <APIManagement /> },
+  { path: "/api-management", element: <APIManagementPage /> },
   { path: "/users", element: <UserManagement /> },
   { path: "/api-keys", element: <APIKeys /> },
   { path: "/settings", element: <Settings /> },
