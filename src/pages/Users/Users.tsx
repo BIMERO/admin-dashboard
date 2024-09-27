@@ -56,7 +56,10 @@ const Users = ({
       <section>
         <h1>User Management</h1>
         <div className="user-mgt">
-          <div className="user-header">
+          <div
+            className="user-header"
+            style={{ justifyContent: "space-between" }}
+          >
             <h2>
               All Users <span>{allusers.length}</span>
             </h2>

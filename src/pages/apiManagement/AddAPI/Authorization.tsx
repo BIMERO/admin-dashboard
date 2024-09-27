@@ -1,7 +1,7 @@
 import React from "react";
 import CustomSelect from "../../../components/customSelect/CustomSelect";
 
-const Authorization = ({ apiData, updateApiData }: any) => {
+const Authorization = ({ apiData, updateApiData, next }: any) => {
   const authOptions = [
     { label: "Basic Auth", value: "basic" },
     { label: "Bearer Token", value: "bearer" },
@@ -29,15 +29,6 @@ const Authorization = ({ apiData, updateApiData }: any) => {
             onSelect={(value) => handleAuthChange("Authorization-Type", value)}
           />
         </div>
-
-        {/* <div className="inputs">
-          <label>Token or Key:</label>
-          <input
-            type="text"
-            value={apiData.headers["Authorization"] || ""}
-            onChange={(e) => handleAuthChange("Authorization", e.target.value)}
-          />
-        </div> */}
 
         {apiData.headers["Authorization-Type"] === "basic" && (
           <div className="basic-auth-inputs">
@@ -75,6 +66,14 @@ const Authorization = ({ apiData, updateApiData }: any) => {
           </div>
         )}
       </div>
+
+      <button
+        onClick={next}
+        className="header-btn"
+        style={{ marginTop: "4rem" }}
+      >
+        Next
+      </button>
     </div>
   );
 };

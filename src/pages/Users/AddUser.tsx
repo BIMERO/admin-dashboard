@@ -5,6 +5,7 @@ import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 
 const roles = ["Admin", "Developer", "Viewer"] as const;
 const statuses = ["Active", "Inactive"] as const;
@@ -45,8 +46,8 @@ const AddUser = ({
   return (
     <div className="add-user">
       <div className="user-header">
+        <FaCircleArrowLeft className="icon" onClick={back} />
         <h1>Add User</h1>
-        <button onClick={back}>Back</button>
       </div>
 
       <form onSubmit={handleSubmit}>

@@ -11,16 +11,14 @@ import {
 import { MdKeyboardArrowDown } from "react-icons/md";
 import EditForm from "./EditForm";
 import { FaUserPlus } from "react-icons/fa6";
+import { HeaderProps } from "../../../interfaces/Headers";
 
 interface APIManagementProps {
   id: number;
   endpoint: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"; // restrict to common HTTP methods
   description: string;
-  headers: {
-    "Content-Type": string;
-    [key: string]: string; // allows additional header fields if needed
-  };
+  headers: HeaderProps[];
   payload: Record<string, any>; // flexible type for payload (can be empty or contain data)
   parameters: {
     limit?: number;
@@ -28,6 +26,7 @@ interface APIManagementProps {
     [key: string]: any; // allows additional parameters if needed
   };
   enabled: boolean;
+  baseUrlId: string;
 }
 
 const APIManagement = ({
@@ -72,7 +71,10 @@ const APIManagement = ({
       <section className="api_management">
         <h1>API Endpoints Management</h1>
 
-        <div className="user-header">
+        <div
+          className="user-header"
+          style={{ justifyContent: "space-between" }}
+        >
           <h2>
             All APIs <span>{allAPIs.length}</span>
           </h2>
@@ -175,17 +177,6 @@ const APIManagement = ({
           onClose={() => setShowEditModal(false)}
         />
       )}
-
-      {/* {showForm && showEditing && (
-        <EditForm
-          row={showEditing}
-          onSave={(updatedRow) => {
-            data.map((item) => (item.id === updatedRow.id ? updatedRow : item));
-            setShowForm(false);
-            setInitialPage(true);
-          }}
-        />
-      )} */}
     </>
   );
 };

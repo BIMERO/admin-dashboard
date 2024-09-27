@@ -3,8 +3,8 @@ import "./customSelect.css";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 interface Option {
-  label: string;
-  value: string;
+  label: any;
+  value: any;
 }
 
 interface CustomSelectProps {

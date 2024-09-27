@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import General from "./General";
 import Headers from "./Headers";
 import Body from "./Body";
 import Authorization from "./Authorization";
+import Params from "./Params";
+import { HeaderProps } from "../../../../interfaces/Headers";
+import { HeadersData } from "../../../headers";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 
 interface APIManagementProps {
   id: number;
   endpoint: string;
   method: ""; // restrict to common HTTP methods
   description: string;
-  headers: {
-    "Content-Type": string;
-    [key: string]: string; // allows additional header fields if needed
-  };
+  headers: HeaderProps[];
   payload: Record<string, any>; // flexible type for payload (can be empty or contain data)
   parameters: {
     limit?: number;
@@ -39,16 +40,24 @@ const AddNewApi = ({
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [apiData, setApiData] = useState({
-    id: Date.now(), // or another unique identifier
+    id: Date.now(),
     endpoint: "",
     method: "GET",
     description: "",
-    headers: {},
+    headers: [],
     payload: {},
     parameters: {},
     enabled: true,
-    baseUrlId: null, // store selected base URL ID
+    baseUrlId: null,
   });
+  const [localBaseUrls, setLocalBaseUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    const storedBaseUrls = localStorage.getItem("endpoints");
+    if (storedBaseUrls) {
+      setLocalBaseUrls(JSON.parse(storedBaseUrls));
+    }
+  }, []);
 
   const handleTabClick = (index: number) => {
     setActiveTab(index);
@@ -73,9 +82,24 @@ const AddNewApi = ({
     }));
   };
 
+  const handleNext = () => {
+    if (activeTab === 2 && apiData.method !== "POST") {
+      // Skip the Body tab if method is not POST
+      setActiveTab(activeTab + 2);
+    } else if (activeTab < 4) {
+      // Proceed to the next tab
+      setActiveTab(activeTab + 1);
+    }
+  };
+
   return (
     <div>
-      <h1>Add New API</h1>
+      <div className="user-header">
+        <FaCircleArrowLeft className="icon" onClick={onBack} />
+
+        <h1>Add User</h1>
+      </div>
+
       <div>
         <div className="api-tabs">
           <span
@@ -108,6 +132,13 @@ const AddNewApi = ({
           >
             Authorization
           </span>
+          <span
+            onClick={() => handleTabClick(4)}
+            className={activeTab === 4 ? "active" : ""}
+            style={{ cursor: "pointer" }}
+          >
+            Params
+          </span>
         </div>
 
         <div className="settings-content">
@@ -115,27 +146,48 @@ const AddNewApi = ({
             <General
               apiData={apiData}
               updateApiData={updateApiData}
+              localBaseUrls={localBaseUrls}
               method={apiData.method}
               onMethodChange={handleMethodChange}
+              next={handleNext}
             />
           )}
           {activeTab === 1 && (
-            <Headers apiData={apiData} updateApiData={updateApiData} />
+            <Headers
+              apiData={apiData}
+              updateApiData={updateApiData}
+              next={handleNext}
+            />
           )}
           {activeTab === 2 && (
-            <Body apiData={apiData} updateApiData={updateApiData} />
+            <Body
+              apiData={apiData}
+              updateApiData={updateApiData}
+              next={handleNext}
+            />
           )}
           {activeTab === 3 && (
-            <Authorization apiData={apiData} updateApiData={updateApiData} />
+            <Authorization
+              apiData={apiData}
+              updateApiData={updateApiData}
+              next={handleNext}
+            />
+          )}
+          {activeTab === 4 && (
+            <Params
+              apiData={apiData}
+              updateApiData={updateApiData}
+              onSave={handleSave}
+            />
           )}
 
-          <button
+          {/* <button
             onClick={handleSave}
             className="header-btn"
             style={{ marginTop: "4rem" }}
           >
             Save API
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

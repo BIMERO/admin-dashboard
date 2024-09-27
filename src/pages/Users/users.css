@@ -8,9 +8,13 @@
 .user-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1rem;
   flex-wrap: wrap;
   margin-bottom: 1.5rem;
+}
+
+.user-header h1 {
+  font-size: 1.5rem;
 }
 
 .user-header button {
@@ -23,6 +27,16 @@
   display: flex;
   gap: 0.5rem;
   font-weight: 600;
+}
+
+.user-header .icon {
+  color: #4313ff;
+  padding: 9px;
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 3rem;
 }
 
 .add-user form {
@@ -107,6 +121,7 @@
   position: absolute;
   background: white;
   top: 0px;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,10 +132,13 @@
   margin: auto;
   border-radius: 0.5rem;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+  height: 100vh;
+  overflow: scroll;
 }
 
 .edit-user-modal {
   width: 100%;
+  height: 100%;
   padding: 2.5rem;
 }
 

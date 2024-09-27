@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import "./apimanagement.css";
+import { HeaderProps } from "../../../interfaces/Headers";
 
 interface APIManagementProps {
   id: number;
   endpoint: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   description: string;
-  headers: {
-    "Content-Type": string;
-    [key: string]: string;
-  };
+  headers: HeaderProps[];
   payload: Record<string, any>;
   parameters: {
     limit?: number;
@@ -17,7 +15,9 @@ interface APIManagementProps {
     [key: string]: any;
   };
   enabled: boolean;
+  baseUrlId: string;
 }
+
 interface EditFormProps {
   row: APIManagementProps;
   onSave: (updatedRow: APIManagementProps) => void;
@@ -63,7 +63,9 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
     <section className="edit-user">
       <div className="edit-user-modal">
         <div className="edit-form">
-          <h2>Edit User</h2>
+          <h2 style={{ marginBottom: "1.5rem", alignItems: "center" }}>
+            Edit User
+          </h2>
           <form onSubmit={handleSave}>
             <div className="inputs">
               <label className="">Endpoint</label>
@@ -113,13 +115,35 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
                   <input
                     type="text"
                     placeholder="Header Value"
-                    value={value}
+                    // value={value}
                     onChange={(e) =>
                       handleHeadersChange(index, key, e.target.value)
                     }
                   />
                 </div>
               ))}
+
+              {/* {formData.headers.map((header, index) => (
+                <div key={index} className="header-pair">
+                  <input
+                    type="text"
+                    placeholder="Header Key"
+                    value={header.name}
+                    style={{ marginBottom: "1rem" }}
+                    onChange={(e) =>
+                      handleHeadersChange(index, "name", e.target.value)
+                    }
+                  />
+                  <input
+                    type="text"
+                    placeholder="Header Value"
+                    value={header.example} // Assuming 'example' is used as the value in the headers
+                    onChange={(e) =>
+                      handleHeadersChange(index, "example", e.target.value)
+                    }
+                  />
+                </div>
+              ))} */}
             </div>
             <div className="inputs">
               <label>Payload (JSON/XML)</label>

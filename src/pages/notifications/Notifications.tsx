@@ -16,7 +16,10 @@ const Notifications = () => {
     <section>
       <h1>User Management</h1>
       <div className="user-mgt">
-        <div className="user-header">
+        <div
+          className="user-header"
+          style={{ justifyContent: "space-between" }}
+        >
           <h2>
             Alerts & Notifications <span>{notificationsData.length}</span>
           </h2>

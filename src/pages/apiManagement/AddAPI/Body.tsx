@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Body = ({ apiData, updateApiData }: any) => {
+const Body = ({ apiData, updateApiData, next }: any) => {
   const [rawPayload, setRawPayload] = useState(
     JSON.stringify(apiData.payload, null, 2)
   );
@@ -42,6 +42,14 @@ const Body = ({ apiData, updateApiData }: any) => {
           }}
         />
       </div>
+
+      <button
+        onClick={next}
+        className="header-btn"
+        style={{ marginTop: "4rem" }}
+      >
+        Next
+      </button>
     </div>
   );
 };

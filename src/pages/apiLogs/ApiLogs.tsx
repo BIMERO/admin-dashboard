@@ -3,7 +3,6 @@ import { apiLogsData } from "./apiLogData";
 import {
   Box,
   Button,
-  MenuItem,
   Modal,
   Table,
   TableBody,
@@ -11,7 +10,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Typography,
 } from "@mui/material";
 import moment from "moment";
@@ -20,6 +18,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CustomSelect from "../../components/customSelect/CustomSelect";
 import { MdOutlineFileDownload } from "react-icons/md";
+import MakeCall from "./MakeCall";
 
 const ApiLogs = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,6 +28,7 @@ const ApiLogs = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [selectedRow, setSelectedRow] = useState<any>(null);
   const [viewDetails, setViewDetails] = useState(false);
+  const [makeCallModal, setMakeCallModal] = useState(false);
 
   const filteredLogs = apiLogsData.filter((log) => {
     const withinDateRange =
@@ -65,10 +65,27 @@ const ApiLogs = () => {
     { label: "Failed", value: "Failed" },
   ];
 
+  const handleMakeCall = () => {
+    setMakeCallModal(true);
+  };
+
+  const handleCloseCall = () => {
+    setMakeCallModal(false);
+  };
+
   return (
     <>
       <section>
-        <h1>API Call Logs</h1>
+        <div
+          className="user-header"
+          style={{ justifyContent: "space-between" }}
+        >
+          <h1>API Call Logs</h1>
+
+          <button className="call-btn" onClick={handleMakeCall}>
+            Make an API Call
+          </button>
+        </div>
 
         <div className="filters">
           <div className="inputs">
@@ -294,6 +311,8 @@ const ApiLogs = () => {
           </Button>
         </Box>
       </Modal>
+
+      {makeCallModal && <MakeCall handleCloseCall={handleCloseCall} />}
     </>
   );
 };
