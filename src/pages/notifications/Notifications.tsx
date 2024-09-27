@@ -14,21 +14,16 @@ import moment from "moment";
 const Notifications = () => {
   return (
     <section>
-      <h1>User Management</h1>
+      <div className="user-header" style={{ justifyContent: "space-between" }}>
+        <h2>
+          Alerts & Notifications <span>{notificationsData.length}</span>
+        </h2>
+        <button>
+          <FaUserPlus />
+          Add New Notification
+        </button>
+      </div>
       <div className="user-mgt">
-        <div
-          className="user-header"
-          style={{ justifyContent: "space-between" }}
-        >
-          <h2>
-            Alerts & Notifications <span>{notificationsData.length}</span>
-          </h2>
-          <button>
-            <FaUserPlus />
-            Add New Notification
-          </button>
-        </div>
-
         <div className="table">
           <TableContainer>
             <Table aria-label="simple table">

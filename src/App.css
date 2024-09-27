@@ -4,7 +4,7 @@
 }
 
 .main-content {
-  width: 100%;
+  width: calc(100vw - 300px);
   margin-left: 300px;
 }
 
@@ -30,5 +30,6 @@ button {
 @media screen and (max-width: 1024px) {
   .main-content {
     margin-left: 0px;
+    width: 100%;
   }
 }

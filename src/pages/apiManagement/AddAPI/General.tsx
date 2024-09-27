@@ -46,7 +46,7 @@ const General: React.FC<GeneralProps> = ({
   };
 
   const handleSave = () => {
-    if (selectedBaseUrl && apiData.endpoint) {
+    if (selectedBaseUrl && apiData.endpoint && apiData.method) {
       const completeUrl = `${selectedBaseUrl}${apiData.endpoint}`;
 
       // Safely retrieve existing APIResources from localStorage
@@ -55,8 +55,15 @@ const General: React.FC<GeneralProps> = ({
         ? JSON.parse(existingResources)
         : [];
 
+      const newApiResource = {
+        baseUrl: selectedBaseUrl,
+        endpoint: apiData.endpoint,
+        requestType: apiData.method,
+        fullUrl: completeUrl,
+      };
+
       // Add the new complete URL to the array
-      apiResourcesArray.push(completeUrl);
+      apiResourcesArray.push(newApiResource);
 
       // Save the updated array back to localStorage
       localStorage.setItem("APIResources", JSON.stringify(apiResourcesArray));

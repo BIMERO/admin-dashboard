@@ -42,7 +42,18 @@ const EditUserForm = ({
   return (
     <section className="edit-user">
       <div className="edit-user-modal">
-        <h2>Edit User</h2>
+        <div className="modal-header">
+          <h2>Edit User </h2>
+          <div className="btns">
+            <button type="submit" className="save-btn">
+              Save Changes
+            </button>
+            <button type="button" onClick={onClose} className="save-btn">
+              Cancel
+            </button>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className="inputs">
             <label htmlFor="fullName">Full Name</label>
@@ -76,15 +87,6 @@ const EditUserForm = ({
             value={status}
             onSelect={(value) => setStatus(value)}
           />
-
-          <div className="btns">
-            <button type="submit" className="save-btn">
-              Save Changes
-            </button>
-            <button type="button" onClick={onClose} className="save-btn">
-              Cancel
-            </button>
-          </div>
         </form>
       </div>
     </section>

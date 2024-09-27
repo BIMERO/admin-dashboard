@@ -97,7 +97,7 @@ const AddNewApi = ({
       <div className="user-header">
         <FaCircleArrowLeft className="icon" onClick={onBack} />
 
-        <h1>Add User</h1>
+        <h1>Add API</h1>
       </div>
 
       <div>
