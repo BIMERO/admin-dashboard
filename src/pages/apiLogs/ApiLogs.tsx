@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { apiLogsData } from "./apiLogData";
+// import { apiLogsData } from "./apiLogData";
+import { ApiData } from "../apiManagement/ApiData";
 import {
   Box,
   Button,
@@ -30,10 +31,10 @@ const ApiLogs = () => {
   const [viewDetails, setViewDetails] = useState(false);
   const [makeCallModal, setMakeCallModal] = useState(false);
 
-  const filteredLogs = apiLogsData.filter((log) => {
+  const filteredLogs = ApiData.filter((log) => {
     const withinDateRange =
-      (!startDate || new Date(log.timestamp) >= startDate) &&
-      (!endDate || new Date(log.timestamp) <= endDate);
+      (!startDate || new Date(log.timeStamp) >= startDate) &&
+      (!endDate || new Date(log.timeStamp) <= endDate);
 
     return (
       log.endpoint.includes(searchQuery) &&
@@ -221,7 +222,11 @@ const ApiLogs = () => {
                             : user.method === "PUT"
                             ? "put-method"
                             : user.method === "POST"
+                            ? "post-method"
+                            : user.method === "DELETE"
                             ? "delete-method"
+                            : user.method === "PATCH"
+                            ? "patch-method"
                             : ""
                         }
                       >

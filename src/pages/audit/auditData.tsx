@@ -1,4 +1,4 @@
-import { Audit } from "../../../interfaces/Audit";
+import { Audit } from "../../interfaces/Audit";
 
 export const auditData: Audit[] = [
   {

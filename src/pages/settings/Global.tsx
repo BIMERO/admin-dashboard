@@ -2,7 +2,10 @@ import React, { useState } from "react";
 
 const Global = () => {
   const [baseUrl, setBaseUrl] = useState(localStorage.getItem("baseUrl") || "");
-  const [endpoints, setEndpoints] = useState<string[]>([]);
+  const [endpoints, setEndpoints] = useState<string[]>(() => {
+    const storedEndpoints = localStorage.getItem("endpoints");
+    return storedEndpoints ? JSON.parse(storedEndpoints) : []; // Initialize from localStorage
+  });
   const [timeoutDuration, setTimeoutDuration] = useState(
     localStorage.getItem("timeoutDuration") || ""
   );

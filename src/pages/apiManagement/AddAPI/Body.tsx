@@ -1,55 +1,99 @@
 import React, { useEffect, useState } from "react";
+import { Endpoints } from "../../../interfaces/Endpoint";
 
-const Body = ({ apiData, updateApiData, next }: any) => {
-  const [rawPayload, setRawPayload] = useState(
-    JSON.stringify(apiData.payload, null, 2)
+const Body = ({ apiData, updateApiData, next, updateLocalApiData }: any) => {
+  const [payloadFields, setPayloadFields] = useState<{ [key: string]: string }>(
+    apiData.payload || {}
   );
 
-  // Update rawPayload when apiData changes, like when switching between APIs
-  useEffect(() => {
-    setRawPayload(JSON.stringify(apiData.payload, null, 2));
-  }, [apiData.payload]);
+  const [newKey, setNewKey] = useState(""); // State for the new key
+  const [newValue, setNewValue] = useState(""); // State for the new value
 
-  const handlePayloadChange = (e: any) => {
-    const value = e.target.value;
-    setRawPayload(value);
+  // Handle the change of the payload field value
+  const handlePayloadChange = (key: string, value: string) => {
+    setPayloadFields((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
-    try {
-      const parsedValue = JSON.parse(value);
-      updateApiData("payload", parsedValue);
-    } catch (error) {
-      // Allow the user to keep typing even if the JSON isn't valid yet
+  // Add the new key-value pair to the payload fields
+  const handleAddPayloadField = () => {
+    if (newKey.trim() && newValue.trim()) {
+      setPayloadFields((prev) => ({
+        ...prev,
+        [newKey]: newValue,
+      }));
+      setNewKey(""); // Clear the input after adding
+      setNewValue(""); // Clear the input after adding
     }
+  };
+
+  // Remove a payload field by its key
+  const handleRemovePayloadField = (key: string) => {
+    const updatedPayloadFields = { ...payloadFields };
+    delete updatedPayloadFields[key];
+    setPayloadFields(updatedPayloadFields);
+  };
+
+  // Save the payload and move to the next step
+  const handleSavePayload = () => {
+    updateApiData("payload", payloadFields); // Update the parent state with the current payload
+    updateLocalApiData("payload", payloadFields); // Update the local state with the current payload
+    next(); // Call the next step function to move forward
   };
 
   return (
     <div>
       <h2 style={{ marginBottom: "2rem" }}>Body</h2>
 
-      <div className="inputs">
-        <label htmlFor="payload">Payload</label>
-        <textarea
-          value={rawPayload} // Formats JSON with indentation
-          onChange={handlePayloadChange}
-          rows={10}
-          cols={50}
-          id="payload"
-          style={{
-            fontFamily: "monospace",
-            fontSize: "14px",
+      <div className="payloads-container">
+        <h2 style={{ marginBottom: "2rem" }}>Add Payload for POST Request</h2>
 
-            backgroundColor: "#f9f9f9",
-          }}
-        />
+        {/* Input fields for new key and value */}
+        <div style={{ marginBottom: "1.5rem" }}>
+          <input
+            type="text"
+            value={newKey}
+            onChange={(e) => setNewKey(e.target.value)}
+            placeholder="Field Name"
+            style={{ marginRight: "1rem" }}
+          />
+          <input
+            type="text"
+            value={newValue}
+            onChange={(e) => setNewValue(e.target.value)}
+            placeholder="Field Value"
+            style={{ marginRight: "1rem" }}
+          />
+          <button onClick={handleAddPayloadField} className="header-btn">
+            Add Payload
+          </button>
+        </div>
+
+        {Object.entries(payloadFields).map(([key, value]) => (
+          <div key={key} className="inputs" style={{ marginBottom: "1.5rem" }}>
+            <span style={{ marginRight: "1rem" }}>
+              <strong>{key}: </strong>
+              {value}
+            </span>
+            <button
+              onClick={() => handleRemovePayloadField(key)}
+              className="header-btn"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+
+        <button
+          onClick={handleSavePayload}
+          className="header-btn"
+          style={{ marginTop: "2rem" }}
+        >
+          Save and Next
+        </button>
       </div>
-
-      <button
-        onClick={next}
-        className="header-btn"
-        style={{ marginTop: "4rem" }}
-      >
-        Next
-      </button>
     </div>
   );
 };

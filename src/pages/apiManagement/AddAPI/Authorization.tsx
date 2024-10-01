@@ -1,7 +1,13 @@
 import React from "react";
 import CustomSelect from "../../../components/customSelect/CustomSelect";
 
-const Authorization = ({ apiData, updateApiData, next }: any) => {
+const Authorization = ({
+  apiData,
+  updateApiData,
+  next,
+  onSave,
+  onLocal,
+}: any) => {
   const authOptions = [
     { label: "Basic Auth", value: "basic" },
     { label: "Bearer Token", value: "bearer" },
@@ -68,12 +74,13 @@ const Authorization = ({ apiData, updateApiData, next }: any) => {
       </div>
 
       <button
-        onClick={next}
+        onClick={onSave}
         className="header-btn"
         style={{ marginTop: "4rem" }}
       >
         Next
       </button>
+      <button onClick={onLocal}>local</button>
     </div>
   );
 };

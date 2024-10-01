@@ -11,6 +11,11 @@ body {
   font-size: 1rem;
 }
 
+h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
+}
+
 .css-174q18p-MuiTableCell-root,
 .css-snl1f5-MuiTableCell-root,
 .css-1t7lzbz-MuiTableCell-root,

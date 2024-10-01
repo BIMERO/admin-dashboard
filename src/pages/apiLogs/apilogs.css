@@ -50,3 +50,19 @@
   align-items: center;
   justify-content: center;
 }
+
+/* make API call */
+
+.query-params {
+  margin: 2rem 0;
+}
+.query-params h3 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.query-params .inputs {
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}

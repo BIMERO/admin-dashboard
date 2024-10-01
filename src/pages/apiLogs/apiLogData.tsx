@@ -1,4 +1,4 @@
-import { APILogs } from "../../../interfaces/Logs";
+import { APILogs } from "../../interfaces/Logs";
 
 export const apiLogsData: APILogs[] = [
   {

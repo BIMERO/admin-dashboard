@@ -9,6 +9,7 @@ interface GeneralProps {
   method: string;
   onMethodChange: any;
   next: any;
+  updateLocalApiData: any;
 }
 
 const General: React.FC<GeneralProps> = ({
@@ -18,10 +19,18 @@ const General: React.FC<GeneralProps> = ({
   method,
   onMethodChange,
   next,
+  updateLocalApiData,
 }) => {
   const handleEndpointChange = (e: any) => {
-    updateApiData("endpoint", e.target.value);
+    let enteredEndpoint = e.target.value;
+
+    if (!enteredEndpoint.startsWith("/")) {
+      enteredEndpoint = "/" + enteredEndpoint;
+    }
+    updateApiData("endpoint", enteredEndpoint);
+    updateLocalApiData("endpoint", enteredEndpoint);
   };
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -29,6 +38,8 @@ const General: React.FC<GeneralProps> = ({
     setSelectedOption(option);
     setIsDropdownOpen(false);
     handleBaseUrlChange(option);
+    updateApiData("baseUrl", option);
+    updateLocalApiData("baseUrl", option);
   };
 
   const methodOptions = [
@@ -45,38 +56,8 @@ const General: React.FC<GeneralProps> = ({
     setSelectedBaseUrl(selectedBaseUrl);
   };
 
-  const handleSave = () => {
-    if (selectedBaseUrl && apiData.endpoint && apiData.method) {
-      const completeUrl = `${selectedBaseUrl}${apiData.endpoint}`;
-
-      // Safely retrieve existing APIResources from localStorage
-      const existingResources = localStorage.getItem("APIResources");
-      const apiResourcesArray = existingResources
-        ? JSON.parse(existingResources)
-        : [];
-
-      const newApiResource = {
-        baseUrl: selectedBaseUrl,
-        endpoint: apiData.endpoint,
-        requestType: apiData.method,
-        fullUrl: completeUrl,
-      };
-
-      // Add the new complete URL to the array
-      apiResourcesArray.push(newApiResource);
-
-      // Save the updated array back to localStorage
-      localStorage.setItem("APIResources", JSON.stringify(apiResourcesArray));
-
-      alert("Endpoint saved successfully!");
-    } else {
-      alert("Please select a base URL and enter an endpoint.");
-    }
-  };
-
   const handleNext = () => {
     next();
-    handleSave();
   };
 
   return (
@@ -121,6 +102,7 @@ const General: React.FC<GeneralProps> = ({
         <label>Endpoint:</label>
         <input
           type="text"
+          id="endpoint"
           value={apiData.endpoint}
           onChange={handleEndpointChange}
           placeholder="/endpoint"

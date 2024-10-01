@@ -11,23 +11,8 @@ import {
 import { MdKeyboardArrowDown } from "react-icons/md";
 import EditForm from "./EditForm";
 import { FaUserPlus } from "react-icons/fa6";
-import { HeaderProps } from "../../../interfaces/Headers";
-
-interface APIManagementProps {
-  id: number;
-  endpoint: string;
-  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"; // restrict to common HTTP methods
-  description: string;
-  headers: HeaderProps[];
-  payload: Record<string, any>; // flexible type for payload (can be empty or contain data)
-  parameters: {
-    limit?: number;
-    offset?: number;
-    [key: string]: any; // allows additional parameters if needed
-  };
-  enabled: boolean;
-  baseUrlId: string;
-}
+import { HeaderProps } from "../../interfaces/Headers";
+import { Endpoints } from "../../interfaces/Endpoint";
 
 const APIManagement = ({
   allAPIs,
@@ -35,26 +20,24 @@ const APIManagement = ({
   setAllAPIs,
 }: {
   allAPIs: any[];
-  setAllAPIs: React.Dispatch<React.SetStateAction<any[]>>;
+  setAllAPIs: React.Dispatch<React.SetStateAction<Endpoints[]>>;
   onAddAPI: () => void;
 }) => {
   const [dropdown, setDropdown] = useState<number | null>(null);
-  const [selectedAPI, setSelectedAPI] = useState<APIManagementProps | null>(
-    null
-  );
+  const [selectedAPI, setSelectedAPI] = useState<Endpoints | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
 
   const handleDropdownToggle = (userId: number) => {
     setDropdown(dropdown === userId ? null : userId);
   };
 
-  const handleEdit = (user: APIManagementProps) => {
+  const handleEdit = (user: Endpoints) => {
     setSelectedAPI(user);
     setShowEditModal(true);
     setDropdown(null);
   };
 
-  const handleSaveEdit = (updatedAPI: APIManagementProps) => {
+  const handleSaveEdit = (updatedAPI: Endpoints) => {
     setAllAPIs((prevAPIs) =>
       prevAPIs.map((api) => (api.id === updatedAPI.id ? updatedAPI : api))
     );
@@ -143,8 +126,7 @@ const APIManagement = ({
                       style={{
                         position: "relative",
                         cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
+
                         color: "#4318ff",
                         fontWeight: "bold",
                       }}

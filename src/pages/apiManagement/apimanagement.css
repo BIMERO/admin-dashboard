@@ -182,3 +182,17 @@ select {
 .current-params li button {
   width: fit-content;
 }
+
+/* Query Params */
+.queries-add {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.queries-inputs {
+  width: 100%;
+  max-width: 500px;
+}

@@ -9,17 +9,12 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
   const [error, setError] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [queryParams, setQueryParams] = useState<{ [key: string]: string }>({});
+  const [payloadFields, setPayloadFields] = useState<{ [key: string]: string }>(
+    {}
+  ); // State for POST payloads
 
-  const handleSelectOption = (option: any) => {
-    setSelectedOption(option.fullUrl);
-    setIsDropdownOpen(false);
-    handleBaseUrlChange(option);
-  };
-
-  const handleBaseUrlChange = (selectedResource: any[]) => {
-    setSelectedResource(selectedResource);
-  };
-
+  // Fetch API resources from localStorage on mount
   useEffect(() => {
     const storedApiResources = localStorage.getItem("APIResources");
     if (storedApiResources) {
@@ -27,104 +22,158 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
     }
   }, []);
 
-  // const handleMakeApiCall = (apiResource: any) => {
-  //   const { fullUrl, requestType } = apiResource;
+  // Detect placeholders in the URL and initialize query parameters
+  const extractPlaceholders = (url: string) => {
+    const regex = /\{([^}]+)\}/g;
+    const matches = Array.from(url.matchAll(regex)); // Convert iterator to an array
+    const params: { [key: string]: string } = {};
 
-  //   fetch(fullUrl, {
-  //     method: requestType,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       // Other headers if needed
-  //     },
-  //     // Include a body if it's a POST or PUT request
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("API Response:", data);
-  //       // Display the response in your UI
-  //     })
-  //     .catch((error) => console.error("Error making API call:", error));
-  // };
+    matches.forEach((match) => {
+      const paramName = match[1];
+      params[paramName] = selectedResource?.queries?.[paramName] || ""; // Pre-fill from queries or default to ""
+    });
+
+    setQueryParams(params);
+  };
+
+  const handleSelectOption = (option: any) => {
+    setSelectedOption(option.fullUrl);
+    setSelectedResource(option);
+    setIsDropdownOpen(false);
+
+    // Extract placeholders from the selected fullUrl
+    extractPlaceholders(option.fullUrl);
+
+    // Fetch payload from localStorage and set it
+    const storedPayload = option.payload || {};
+    setPayloadFields(storedPayload); // Set the payload fields from the selected resource
+  };
+
+  const handleQueryChange = (key: string, value: string) => {
+    setQueryParams((prevParams) => ({
+      ...prevParams,
+      [key]: value,
+    }));
+  };
+
+  const handlePayloadChange = (key: string, value: string) => {
+    setPayloadFields((prevPayload) => ({
+      ...prevPayload,
+      [key]: value,
+    }));
+  };
 
   const handleExecute = async () => {
-    if (!selectedResource) {
-      setError("No API resource selected.");
-      console.log("No API resource selected.");
-      return;
-    }
+    if (!selectedResource) return;
+
+    // Replace placeholders with the user input from queryParams
+    let fullUrl = selectedResource.fullUrl;
+    Object.keys(queryParams).forEach((key) => {
+      fullUrl = fullUrl.replace(`{${key}}`, queryParams[key]);
+    });
 
     try {
       const res = await axios({
         method: selectedResource.requestType.toLowerCase(),
-        url: selectedResource.fullUrl,
+        url: fullUrl,
+        data:
+          selectedResource.requestType.toLowerCase() === "post"
+            ? payloadFields
+            : undefined, // Include payload for POST requests
       });
       setResponse(JSON.stringify(res.data, null, 2));
-      console.log("API Response:", res.data);
       setError(null);
     } catch (err) {
-      setError("Error occurred while making API call.");
-      setResponse(null);
+      setResponse("Error occurred while making API call.");
+      setError("");
     }
   };
 
   return (
     <section className="edit-user">
-      <div className="edit-user-modal">
+      <div
+        className="edit-user-modal"
+        style={{ padding: "2rem", minHeight: "100vh" }}
+      >
         <div className="modal-header">
-          <h2>Make API Call</h2>{" "}
+          <h2>Make API Call</h2>
           <button className="header-btn" onClick={handleCloseCall}>
             Close
           </button>
         </div>
-        <div>
+
+        {/* Dropdown to select Base URL */}
+        <div
+          className="custom-select-container"
+          style={{ marginBottom: "2rem" }}
+        >
+          <label>Select Base URL</label>
           <div
-            className="custom-select-container"
-            style={{ marginBottom: "1.25rem" }}
+            className="custom-select"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            <label htmlFor="custom-select">Select Base Url</label>
-            <div
-              className="custom-select"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              <span className="selected-option">
-                {selectedOption ? selectedOption : "Select Base URL"}
-              </span>
-              <span className={`${isDropdownOpen ? "open" : ""}`}>
-                <MdOutlineKeyboardArrowDown style={{ fontSize: "1rem" }} />
-              </span>
-            </div>
-
-            {isDropdownOpen && (
-              <ul className="dropdown-list">
-                {apiResources?.map((option, index) => (
-                  <li
-                    key={index}
-                    className={`dropdown-item ${
-                      option === selectedOption ? "selected" : ""
-                    }`}
-                    onClick={() => handleSelectOption(option)}
-                  >
-                    {option.fullUrl} ({option.requestType})
-                  </li>
-                ))}
-              </ul>
-            )}
+            <span>{selectedOption || "Select Base URL"}</span>
+            <MdOutlineKeyboardArrowDown />
           </div>
-
-          <button className="header-btn" onClick={handleExecute}>
-            Execute
-          </button>
-
-          <div className="inputs" style={{ marginTop: "1.5rem" }}>
-            <label>Response:</label>
-            <textarea
-              readOnly
-              value={response || (error ? error : "No response yet")}
-              rows={40}
-              cols={60}
-            />
-          </div>
+          {isDropdownOpen && (
+            <ul className="dropdown-list">
+              {apiResources.map((option, index) => (
+                <li key={index} onClick={() => handleSelectOption(option)}>
+                  {option.fullUrl} ({option.requestType})
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
+
+        {/* Input fields for dynamic placeholders like {id}, {name}, etc. */}
+        {Object.keys(queryParams).length > 0 && (
+          <div className="query-params">
+            <h3>Query Parameters</h3>
+            {Object.keys(queryParams).map((param, index) => (
+              <div key={index} className="inputs">
+                <label>{param}:</label>
+                <input
+                  type="text"
+                  value={queryParams[param]}
+                  onChange={(e) => handleQueryChange(param, e.target.value)}
+                  placeholder={`Enter value for ${param}`}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Input fields for POST payload if the request type is POST */}
+        {selectedResource &&
+          selectedResource.requestType.toLowerCase() === "post" && (
+            <div>
+              <h3 style={{ marginBottom: "1rem" }}>Payload</h3>
+              {Object.keys(payloadFields).map((key, index) => (
+                <div key={index} className="inputs">
+                  <label>{key}:</label>
+                  <input
+                    type="text"
+                    value={payloadFields[key]}
+                    onChange={(e) => handlePayloadChange(key, e.target.value)}
+                    placeholder={`Enter value for ${key}`}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+        <button className="header-btn" onClick={handleExecute}>
+          Execute
+        </button>
+
+        {/* Display response */}
+        {response && (
+          <div className="inputs" style={{ marginTop: "2rem" }}>
+            <label>Response:</label>
+            <textarea readOnly value={response} rows={10} />
+          </div>
+        )}
       </div>
     </section>
   );

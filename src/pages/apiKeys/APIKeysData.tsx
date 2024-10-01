@@ -1,4 +1,4 @@
-import { ApiKeys } from "../../../interfaces/ApiKeys";
+import { ApiKeys } from "../../interfaces/ApiKeys";
 
 export const APIKeysData: ApiKeys[] = [
   {

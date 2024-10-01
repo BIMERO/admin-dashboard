@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { HeaderProps } from "../../../../interfaces/Headers";
+import { HeaderProps } from "../../../interfaces/Headers";
 import { HeadersData } from "../../../headers";
 
-const Headers = ({ apiData, updateApiData, next }: any) => {
+const Headers = ({ apiData, updateApiData, next, updateLocalApiData }: any) => {
   const [newHeader, setNewHeader] = useState<HeaderProps>({
     name: "",
-    description: "",
-    example: "",
-    category: "",
     samples: [],
   });
+  const [selectedSample, setSelectedSample] = useState<string>("");
 
   const handleHeaderChange = (
     index: number,
@@ -19,18 +17,19 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
     const updatedHeaders = [...apiData.headers];
     updatedHeaders[index] = { ...updatedHeaders[index], [key]: value };
     updateApiData("headers", updatedHeaders);
+    updateLocalApiData("headers", updatedHeaders);
   };
 
   const handleAddHeader = () => {
-    if (newHeader.name && newHeader.category) {
-      updateApiData("headers", [...apiData.headers, newHeader]);
+    if (newHeader.name && selectedSample) {
+      const updatedHeader = { ...newHeader, samples: [selectedSample] };
+      updateApiData("headers", [...apiData.headers, updatedHeader]);
+      updateLocalApiData("headers", [...apiData.headers, updatedHeader]);
       setNewHeader({
         name: "",
-        description: "",
-        example: "",
-        category: "",
         samples: [],
       });
+      setSelectedSample("");
     }
   };
 
@@ -39,29 +38,53 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
       (_: HeaderProps, i: number) => i !== index
     );
     updateApiData("headers", updatedHeaders);
+    updateLocalApiData("headers", updatedHeaders);
   };
+
+  const availableHeaders = HeadersData.filter(
+    (header) =>
+      !apiData.headers.some(
+        (addedHeader: HeaderProps) => addedHeader.name === header.name
+      )
+  );
 
   return (
     <div className="headers-container">
       <h2 style={{ marginBottom: "2rem" }}>Headers</h2>
       {apiData.headers.map((header: HeaderProps, index: number) => (
-        <div key={index} className="inputs" style={{ marginBottom: "1.5rem" }}>
-          <label>Name:</label>
-          <input
-            type="text"
-            value={header.name}
-            onChange={(e) => handleHeaderChange(index, "name", e.target.value)}
-            style={{ marginBottom: "1.25rem" }}
-          />
-          <label>Category:</label>
-          <input
-            type="text"
-            value={header.category}
-            onChange={(e) =>
-              handleHeaderChange(index, "category", e.target.value)
-            }
-            style={{ marginBottom: "1.25rem" }}
-          />
+        <div
+          key={index}
+          className="input-flex"
+          style={{ marginBottom: "6rem" }}
+        >
+          <div className="inputs">
+            <label>Name:</label>
+            <input
+              type="text"
+              value={header.name}
+              onChange={(e) =>
+                handleHeaderChange(index, "name", e.target.value)
+              }
+              disabled
+            />
+          </div>
+          <div className="inputs">
+            <label>Category:</label>
+            <select
+              value={header.samples[0]}
+              onChange={(e) =>
+                handleHeaderChange(index, "samples", e.target.value.split(", "))
+              }
+              disabled
+            >
+              <option value="">Select Sample</option>
+              {header.samples.map((sample, i) => (
+                <option key={i} value={sample}>
+                  {sample}
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             onClick={() => handleRemoveHeader(index)}
             className="header-btn"
@@ -77,21 +100,19 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
           <select
             value={newHeader.name}
             onChange={(e) => {
-              const selectedHeader = HeadersData.find(
+              const selectedHeader = availableHeaders.find(
                 (h) => h.name === e.target.value
               );
               setNewHeader({
                 name: selectedHeader?.name || "",
-                description: selectedHeader?.description || "",
-                example: selectedHeader?.example || "",
-                category: selectedHeader?.category || "",
                 samples: selectedHeader?.samples || [],
               });
+              setSelectedSample("");
             }}
             style={{ marginRight: "10px" }}
           >
             <option value="">Select Header Name</option>
-            {HeadersData.map((header) => (
+            {availableHeaders.map((header) => (
               <option key={header.name} value={header.name}>
                 {header.name}
               </option>
@@ -102,13 +123,8 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
         <div className="inputs">
           <label>Header Value</label>
           <select
-            value={newHeader.samples.join(", ")}
-            onChange={(e) =>
-              setNewHeader({
-                ...newHeader,
-                samples: e.target.value.split(", "),
-              })
-            }
+            value={selectedSample}
+            onChange={(e) => setSelectedSample(e.target.value)}
           >
             <option value="">Select Sample</option>
             {newHeader.samples.map((sample, index) => (

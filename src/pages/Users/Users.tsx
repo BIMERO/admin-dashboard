@@ -11,7 +11,7 @@ import {
 import { FaUserPlus } from "react-icons/fa6";
 import moment from "moment";
 import EditUserForm from "./EditUserForm";
-import { User } from "../../../interfaces/User";
+import { User } from "../../interfaces/User";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -116,6 +116,12 @@ const Users = ({
                     >
                       Action
                     </TableCell>
+                    <TableCell
+                      align="left"
+                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                    >
+                      Enable
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -160,6 +166,12 @@ const Users = ({
                             </p>
                           </div>
                         )}
+                      </TableCell>
+                      <TableCell align="left">
+                        <div className="toggle-switch">
+                          <input type="checkbox" name="check" id="check" />
+                          <label htmlFor="check" className="toggle-btn"></label>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}

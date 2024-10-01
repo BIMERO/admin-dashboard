@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { User } from "../../../interfaces/User";
+import { User } from "../../interfaces/User";
 import CustomSelect from "../../components/customSelect/CustomSelect";
 
 const EditUserForm = ({
@@ -41,7 +41,7 @@ const EditUserForm = ({
 
   return (
     <section className="edit-user">
-      <div className="edit-user-modal">
+      <div className="edit-user-modal" style={{ padding: "2rem" }}>
         <div className="modal-header">
           <h2>Edit User </h2>
           <div className="btns">

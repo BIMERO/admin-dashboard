@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { useState } from "react";
-import { User } from "../../../interfaces/User";
+import { User } from "../../interfaces/User";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,

@@ -123,18 +123,17 @@
   position: absolute;
   background: white;
   top: 0px;
-  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   left: 0;
   right: 0;
-  width: 100%;
+  width: 90%;
   max-width: 800px;
-  margin: auto;
+  margin: 3rem auto;
   border-radius: 0.5rem;
   box-shadow: -1px -1px 3px rgba(0, 0, 0, 0.4);
-  height: 100vh;
+  max-height: 100vh;
   overflow: scroll;
   z-index: 20;
 }
@@ -142,7 +141,6 @@
 .edit-user-modal {
   width: 100%;
   height: 100%;
-  padding: 2.5rem;
 }
 
 .modal-header {
@@ -178,3 +176,39 @@
   margin-top: 3rem;
   gap: 1rem;
 }
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-btn {
+  background: #d2d2d2;
+  width: 5rem;
+  height: 2rem;
+  cursor: pointer;
+  border-radius: 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-btn::before {
+  content: "";
+  position: absolute;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: white;
+  border-radius: 50%;
+  margin: 0.25rem;
+  left: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+/* .toggle-btn.active::before {
+  transform: translateX(3rem);
+}
+
+.toggle-btn.active {
+} */

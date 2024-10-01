@@ -1,4 +1,4 @@
-import { Notification } from "../../../interfaces/Notification";
+import { Notification } from "../../interfaces/Notification";
 
 export const notificationsData: Notification[] = [
   {

@@ -1,22 +1,17 @@
 import React from "react";
-
-// CSS module or any other styling method can be applied here
 import "./support.css";
+import { TbSettings2 } from "react-icons/tb";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { faqs } from "./faqs";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { IoIosArrowDown } from "react-icons/io";
+
 const Support = () => {
   return (
     <div className="support-container">
-      {/* Header Section */}
       <header className="support-header">
-        <h1>Documentation & Support</h1>
-      </header>
-
-      {/* Main Section */}
-      <main className="support-main">
-        {/* Documentation Section */}
-        <section className="documentation-section">
-          <h2>Documentation</h2>
-
-          {/* Overview Section */}
+        <div className="header">
+          <h1>Documentation & Support</h1>
           <div className="overview-section">
             <h3>Overview</h3>
             <p>
@@ -25,210 +20,185 @@ const Support = () => {
               features.
             </p>
           </div>
+        </div>
+      </header>
 
-          {/* API Documentation */}
-          <div className="api-documentation">
-            <h3>API Documentation</h3>
-            <div>
-              <h4>Getting Started</h4>
+      <main className="support-main">
+        {/* Documentation Section */}
+
+        <div className="documentation-section">
+          <div className="documentation">
+            <TbSettings2 />
+            <div className="documentation-header">
+              <h3>API Documentation</h3>
               <p>
                 Learn how to set up API keys, authentication, and make your
                 first API call.
               </p>
-              <p>Here are some sample requests and responses:</p>
-              {/* Add sample API code examples */}
             </div>
-            <div>
-              <h4>API Endpoints</h4>
+          </div>
+          <div className="documentation">
+            <IoDocumentTextOutline />
+            <div className="documentation-header">
+              <h3>Documentation</h3>
               <p>Detailed information about each API endpoint:</p>
-              {/* Add endpoint tables or descriptions */}
             </div>
-            <div>
-              <h4>Error Codes</h4>
-              <p>Explore the common error codes and their solutions.</p>
+          </div>
+        </div>
+
+        <div className="documentation-section">
+          <div className="documentation">
+            <TbSettings2 />
+            <div className="documentation-header">
+              <h3>API Endpoints</h3>
+              <p>Detailed information about each API endpoint</p>
             </div>
-            <div>
-              <h4>Rate Limiting</h4>
+          </div>
+          <div className="documentation">
+            <IoDocumentTextOutline />
+            <div className="documentation-header">
+              <h3>Error Codes</h3>
+              <p>Explore the common error codes and their solutions.:</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="documentation-section">
+          <div className="documentation">
+            <IoDocumentTextOutline />
+            <div className="documentation-header">
+              <h3>Rate Limiting</h3>
               <p>
                 Understand rate limits per pricing tier and how to manage them.
               </p>
             </div>
           </div>
+          <div className="documentation">
+            <IoDocumentTextOutline />
+            <div className="documentation-header">
+              <h3>Interactive API Explorer</h3>
+              <p>Test your API calls directly using our built-in tool.</p>
+            </div>
+          </div>
+        </div>
 
-          {/* User Guides */}
-          <div className="user-guides">
-            <h3>User Guides</h3>
-            <div>
-              <h4>How-To Articles</h4>
+        <div className="documentation-section">
+          <div className="documentation">
+            <IoDocumentTextOutline />
+            <div className="documentation-header">
+              <h3>User Guides</h3>
               <p>
                 Follow step-by-step instructions to use key features like API
                 key management, generating reports, etc.
               </p>
             </div>
-            <div>
-              <h4>Best Practices</h4>
+          </div>
+          <div className="documentation">
+            <IoDocumentTextOutline />
+            <div className="documentation-header">
+              <h3>Best Practices</h3>
               <p>
                 Explore best practices for API design, security, and performance
                 optimization.
               </p>
             </div>
-            <div>
-              <h4>Troubleshooting</h4>
+          </div>
+        </div>
+
+        <div className="documentation-section">
+          <div className="documentation">
+            <IoDocumentTextOutline />
+            <div className="documentation-header">
+              <h3>User Guides</h3>
+              <p>
+                Follow step-by-step instructions to use key features like API
+                key management, generating reports, etc.
+              </p>
+            </div>
+          </div>
+          <div className="documentation">
+            <IoDocumentTextOutline />
+            <div className="documentation-header">
+              <h3>Troubleshooting</h3>
               <p>Find solutions for common problems users encounter.</p>
             </div>
           </div>
-
-          {/* Interactive API Explorer */}
-          <div className="interactive-explorer">
-            <h3>Interactive API Explorer</h3>
-            <p>Test your API calls directly using our built-in tool.</p>
-            {/* Add a simple console UI for users to test their API requests */}
-          </div>
-        </section>
+        </div>
 
         {/* Support Section */}
         <section className="support-section">
-          <h2>Support</h2>
-
-          {/* Support Channels */}
           <div className="support-channels">
-            <h3>Support Channels</h3>
+            <h4>Contact Us</h4>
             <form className="contact-form">
-              <h4>Contact Us</h4>
-              <label>Name:</label>
-              <input type="text" placeholder="Your name" />
-              <label>Email:</label>
-              <input type="email" placeholder="Your email" />
-              <label>Subject:</label>
-              <input type="text" placeholder="Subject" />
-              <label>Message:</label>
-              <textarea placeholder="Type your message here"></textarea>
-              <label>Category:</label>
-              <select>
-                <option>General Inquiry</option>
-                <option>Bug Report</option>
-                <option>Feature Request</option>
-                <option>Billing Support</option>
-              </select>
-              <button type="submit">Submit</button>
+              <div className="input-flex">
+                <div className="inputs">
+                  <label>Name:</label>
+                  <input type="text" placeholder="Your name" />
+                </div>
+                <div className="inputs">
+                  <label>Email:</label>
+                  <input type="email" placeholder="Your email" />
+                </div>
+              </div>
+
+              <div className="input-flex">
+                <div className="inputs">
+                  <label>Subject:</label>
+                  <input type="text" placeholder="Subject" />
+                </div>
+                <div className="inputs">
+                  <label>Category:</label>
+                  <select>
+                    <option>General Inquiry</option>
+                    <option>Bug Report</option>
+                    <option>Feature Request</option>
+                    <option>Billing Support</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="input-flex">
+                <div className="inputs">
+                  <label>Message:</label>
+                  <textarea
+                    placeholder="Type your message here"
+                    cols={10}
+                    rows={5}
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="header-btn"
+                style={{ margin: "auto" }}
+              >
+                Submit
+              </button>
             </form>
-
-            <div className="contact-details">
-              <p>
-                Email:{" "}
-                <a href="mailto:support@example.com">support@example.com</a>
-              </p>
-              <p>
-                Phone: <a href="tel:+123456789">+1 234 567 89</a>
-              </p>
-              <p>
-                Live Chat: <button>Chat Now</button>
-              </p>
-            </div>
-          </div>
-
-          {/* FAQs */}
-          <div className="faq-section">
-            <h3>FAQs</h3>
-            <div>
-              <h4>General Questions</h4>
-              <p>Find answers to basic questions about the system.</p>
-            </div>
-            <div>
-              <h4>Billing & Payments</h4>
-              <p>Get help with pricing, billing cycles, and payment methods.</p>
-            </div>
-            <div>
-              <h4>Technical Issues</h4>
-              <p>
-                Resolve common technical issues related to connectivity, API
-                keys, etc.
-              </p>
-            </div>
-            <div>
-              <h4>Security & Compliance</h4>
-              <p>
-                Learn more about security protocols, data encryption, and
-                compliance.
-              </p>
-            </div>
-          </div>
-
-          {/* Knowledge Base */}
-          <div className="knowledge-base">
-            <h3>Knowledge Base</h3>
-            <input
-              type="text"
-              placeholder="Search articles, guides, or steps"
-            />
-            <div>
-              <h4>Popular Articles</h4>
-              {/* Display a list of frequently accessed articles */}
-            </div>
           </div>
         </section>
 
-        {/* System Status Section */}
-        <section className="system-status">
-          <h2>System Status</h2>
-          <div className="status-dashboard">
-            <p>All systems operational</p>
-            <p>24h Uptime: 99.98%</p>
-            <p>Last outage: 2 days ago</p>
-            {/* Add a real-time status feed */}
-          </div>
-          <div className="maintenance-notice">
-            <p>
-              Scheduled maintenance on Sep 25, 2024. Expected downtime: 30 mins.
-            </p>
-          </div>
-        </section>
-
-        {/* Feedback & Feature Requests Section */}
-        <section className="feedback-section">
-          <h2>Feedback & Feature Requests</h2>
-          <form className="feedback-form">
-            <label>Rate your experience:</label>
-            {/* Add a star rating component */}
-            <textarea placeholder="Tell us how we can improve"></textarea>
-            <button type="submit">Submit Feedback</button>
-          </form>
-          <div className="feature-requests">
-            <h3>Feature Requests</h3>
-            {/* List of feature requests */}
-            <p>Public roadmap and voting system for new features.</p>
-          </div>
-        </section>
-
-        {/* Account Management Support Section */}
-        <section className="account-management">
-          <h2>Account Management Support</h2>
+        <div className="faq-section">
+          <h3>FAQs</h3>
           <div>
-            <h3>Billing & Payments</h3>
-            <p>
-              Manage your invoices, payment methods, and subscription plans.
-            </p>
+            {faqs.map((val) => (
+              <div className="faq" key={val.id}>
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<IoIosArrowDown />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    {val.question}
+                  </AccordionSummary>
+                  <AccordionDetails>{val.answer}</AccordionDetails>
+                </Accordion>
+              </div>
+            ))}
           </div>
-          <div>
-            <h3>Account Security</h3>
-            <p>Set up MFA, manage API keys, and recover your account.</p>
-          </div>
-        </section>
+        </div>
       </main>
-
-      {/* Footer Section */}
-      <footer className="support-footer">
-        <div>
-          <p>Legal & Compliance</p>
-          <a href="/privacy-policy">Privacy Policy</a> |{" "}
-          <a href="/terms-of-service">Terms of Service</a>
-        </div>
-        <div className="social-links">
-          {/* Add social media icons */}
-          <a href="#">Twitter</a> | <a href="#">LinkedIn</a> |{" "}
-          <a href="#">Facebook</a>
-        </div>
-      </footer>
     </div>
   );
 };
