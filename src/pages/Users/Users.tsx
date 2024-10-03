@@ -15,6 +15,12 @@ import { User } from "../../interfaces/User";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import {
+  deleteUser,
+  filterUsers,
+  getEditUser,
+  updateUserStatus,
+} from "../../config/apiService";
 
 const Users = ({
   allusers,
@@ -25,16 +31,22 @@ const Users = ({
   setAllUsers: React.Dispatch<React.SetStateAction<User[]>>;
   onAddUser: () => void;
 }) => {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [dropdown, setDropdown] = useState<number | null>(null);
+  const [filterName, setFilterName] = useState<string>("");
+  const [filterStatus, setFilterStatus] = useState<string>("");
+  const [filterEmail, setFilterEmail] = useState<string>("");
+  const [filterType, setFilterType] = useState<string>("");
+  const [filteredUsers, setFilteredUsers] = useState<User[]>(allusers);
 
   const handleDropdownToggle = (userId: number) => {
     setDropdown(dropdown === userId ? null : userId);
   };
 
-  const handleEdit = (user: User) => {
-    setSelectedUser(user);
+  const handleEdit = async (userId: number) => {
+    const response = await getEditUser(userId);
+    setSelectedUser(response.data);
     setShowEditModal(true);
     setDropdown(null);
   };
@@ -46,9 +58,47 @@ const Users = ({
     setShowEditModal(false);
   };
 
-  const handleDelete = (userId: number) => {
-    setAllUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-    setDropdown(null);
+  const handleDelete = async (userId: number) => {
+    try {
+      const response = await deleteUser(userId); // Assuming deleteUser is an API call
+      // Update the state to remove the deleted user
+      setAllUsers((prevUsers) =>
+        prevUsers.filter((user) => user.id !== userId)
+      );
+      setDropdown(null); // Assuming this clears the dropdown or some state
+      alert("user has been deleted");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      // Optional: Handle error (e.g., show a notification)
+    }
+  };
+
+  const handleToggle = async (userId: number, currentStatus: string) => {
+    const newStatus = currentStatus === "active" ? "inactive" : "active";
+    try {
+      const response = await updateUserStatus(userId, { status: newStatus }); // Send POST request
+      setAllUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === userId ? { ...user, status: newStatus } : user
+        )
+      );
+      alert("user status has been updated");
+    } catch (error) {
+      console.error("Error updating user status:", error);
+      // Optionally, handle the error (e.g., show a notification)
+    }
+  };
+
+  const handleFilter = async () => {
+    const filters = {
+      filterName: filterName || undefined,
+      filterStatus: filterStatus || undefined,
+      filterEmail: filterEmail || undefined,
+      filterType: filterType || undefined,
+    };
+    const response = await filterUsers(filters);
+    setFilteredUsers(response.data);
   };
 
   return (
@@ -65,8 +115,45 @@ const Users = ({
             </h2>
             <button onClick={onAddUser}>
               <FaUserPlus />
-              Add New User
+              Create User
             </button>
+          </div>
+
+          <div className="filters">
+            <div className="inputs">
+              <input
+                type="text"
+                placeholder="Search Name...."
+                value={filterName}
+                onChange={(e) => setFilterName(e.target.value)}
+              />
+            </div>
+            <div className="inputs">
+              <input
+                type="text"
+                placeholder="Search Email...."
+                value={filterEmail}
+                onChange={(e) => setFilterEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="inputs">
+              <input
+                type="text"
+                placeholder="Search type...."
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+              />
+            </div>
+            <div className="inputs">
+              <input
+                type="text"
+                placeholder="Search type...."
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+              />
+            </div>
+            <button onClick={handleFilter}>Filter</button>
           </div>
 
           <div className="table">
@@ -125,12 +212,12 @@ const Users = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {allusers.map((user) => (
+                  {filteredUsers.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell align="left">{user.id}</TableCell>
-                      <TableCell align="left">{user.fullName}</TableCell>
+                      <TableCell align="left">{`${user.first_name} ${user.last_name}`}</TableCell>
                       <TableCell align="left">{user.email}</TableCell>
-                      <TableCell align="left">{user.role}</TableCell>
+                      <TableCell align="left">{user.type}</TableCell>
                       <TableCell align="left">{user.status}</TableCell>
                       <TableCell align="left">
                         {moment(user.lastLogin).format("YYYY/MM/DD, HH:mm")}
@@ -151,7 +238,7 @@ const Users = ({
                         <MdKeyboardArrowDown style={{ fontSize: "1.25rem" }} />
                         {dropdown === user.id && (
                           <div className="dropdown">
-                            <p onClick={() => handleEdit(user)}>
+                            <p onClick={() => handleEdit(user.id)}>
                               <CiEdit />
                               Edit
                             </p>
@@ -169,8 +256,17 @@ const Users = ({
                       </TableCell>
                       <TableCell align="left">
                         <div className="toggle-switch">
-                          <input type="checkbox" name="check" id="check" />
-                          <label htmlFor="check" className="toggle-btn"></label>
+                          <input
+                            type="checkbox"
+                            name={`check-${user.id}`}
+                            id={`check-${user.id}`}
+                            checked={user.status === "active"}
+                            onChange={() => handleToggle(user.id, user.status)}
+                          />
+                          <label
+                            htmlFor={`check-${user.id}`}
+                            className="toggle-btn"
+                          ></label>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -187,6 +283,7 @@ const Users = ({
           user={selectedUser}
           onSave={handleSaveEdit}
           onClose={() => setShowEditModal(false)}
+          allUsers={allusers}
         />
       )}
     </div>

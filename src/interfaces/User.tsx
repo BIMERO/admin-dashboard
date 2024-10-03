@@ -1,12 +1,14 @@
 export interface User {
   id: number;
-  fullName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password?: string;
-  role: string;
+  type: string;
   status: string;
   avatar?: string;
   lastLogin: string;
+  created_at: string;
   // createdAt: string;
   // updatedAt: string;
   // deletedAt: string | null;

@@ -67,88 +67,102 @@ const APIManagement = ({
           </button>
         </div>
         <div className="table_container">
-          <TableContainer>
-            <Table sx={{}} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left" style={{ fontWeight: "bold" }}>
-                    Endpoint
-                  </TableCell>
-                  <TableCell align="left" style={{ fontWeight: "bold" }}>
-                    Method
-                  </TableCell>
-                  <TableCell align="left" style={{ fontWeight: "bold" }}>
-                    Description
-                  </TableCell>
-                  <TableCell align="left" style={{ fontWeight: "bold" }}>
-                    Enabled
-                  </TableCell>
-                  <TableCell align="left" style={{ fontWeight: "bold" }}>
-                    Action
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {allAPIs.map((endpoint) => (
-                  <TableRow
-                    key={endpoint.endpoint}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                    }}
-                  >
-                    <TableCell align="left">{endpoint.endpoint}</TableCell>
-                    <TableCell align="left">
-                      <p
-                        className={
-                          endpoint.method === "GET"
-                            ? "get-method"
-                            : endpoint.method === "PUT"
-                            ? "put-method"
-                            : endpoint.method === "POST"
-                            ? "post-method"
-                            : endpoint.method === "DELETE"
-                            ? "delete-method"
-                            : endpoint.method === "PATCH"
-                            ? "patch-method"
-                            : ""
-                        }
+          {allAPIs.length > 0 ? (
+            <>
+              <TableContainer>
+                <Table sx={{}} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left" style={{ fontWeight: "bold" }}>
+                        Endpoint
+                      </TableCell>
+                      <TableCell align="left" style={{ fontWeight: "bold" }}>
+                        Method
+                      </TableCell>
+                      <TableCell align="left" style={{ fontWeight: "bold" }}>
+                        Description
+                      </TableCell>
+                      <TableCell align="left" style={{ fontWeight: "bold" }}>
+                        Enabled
+                      </TableCell>
+                      <TableCell align="left" style={{ fontWeight: "bold" }}>
+                        Action
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {allAPIs.map((endpoint) => (
+                      <TableRow
+                        key={endpoint.endpoint}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
                       >
-                        {endpoint.method}
-                      </p>
-                    </TableCell>
-                    <TableCell align="left">{endpoint.description}</TableCell>
-                    <TableCell align="left">
-                      {endpoint.enabled ? "True" : "False"}
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      onClick={() => handleDropdownToggle(endpoint.id)}
-                      style={{
-                        position: "relative",
-                        cursor: "pointer",
+                        <TableCell align="left">{endpoint.endpoint}</TableCell>
+                        <TableCell align="left">
+                          <p
+                            className={
+                              endpoint.method === "get"
+                                ? "get-method"
+                                : endpoint.method === "put"
+                                ? "put-method"
+                                : endpoint.method === "post"
+                                ? "post-method"
+                                : endpoint.method === "delete"
+                                ? "delete-method"
+                                : endpoint.method === "patch"
+                                ? "patch-method"
+                                : ""
+                            }
+                          >
+                            {endpoint.method}
+                          </p>
+                        </TableCell>
+                        <TableCell align="left">
+                          {endpoint.description}
+                        </TableCell>
+                        <TableCell align="left">
+                          {endpoint.enabled === "enabled" ? "False" : "True"}
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          onClick={() => handleDropdownToggle(endpoint.id)}
+                          style={{
+                            position: "relative",
+                            cursor: "pointer",
 
-                        color: "#4318ff",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      View Details{" "}
-                      <MdKeyboardArrowDown style={{ fontSize: "1.25rem" }} />
-                      {dropdown === endpoint.id && (
-                        <>
-                          <div className="dropdown">
-                            <p onClick={() => handleEdit(endpoint)}>Edit</p>
-                            <p onClick={() => handleDelete(endpoint.id)}>
-                              Delete
-                            </p>
-                          </div>
-                        </>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                            color: "#4318ff",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          View Details{" "}
+                          <MdKeyboardArrowDown
+                            style={{ fontSize: "1.25rem" }}
+                          />
+                          {dropdown === endpoint.id && (
+                            <>
+                              <div className="dropdown">
+                                <p onClick={() => handleEdit(endpoint)}>Edit</p>
+                                <p onClick={() => handleDelete(endpoint.id)}>
+                                  Delete
+                                </p>
+                              </div>
+                            </>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          ) : (
+            <>
+              <div>
+                <p>No APIs found</p>
+              </div>
+            </>
+          )}
         </div>
       </section>
 

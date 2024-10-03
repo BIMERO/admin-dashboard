@@ -13,6 +13,7 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
   const [payloadFields, setPayloadFields] = useState<{ [key: string]: string }>(
     {}
   ); // State for POST payloads
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
   // Fetch API resources from localStorage on mount
   useEffect(() => {
@@ -89,6 +90,10 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
     }
   };
 
+  const filteredBaseUrls = apiResources.filter((resources) =>
+    resources.fullUrl.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <section className="edit-user">
       <div
@@ -117,7 +122,17 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
           </div>
           {isDropdownOpen && (
             <ul className="dropdown-list">
-              {apiResources.map((option, index) => (
+              <li className="inputs">
+                <input
+                  type="search"
+                  name="searchapis"
+                  id="searchapis"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </li>
+              {filteredBaseUrls.map((option, index) => (
                 <li key={index} onClick={() => handleSelectOption(option)}>
                   {option.fullUrl} ({option.requestType})
                 </li>

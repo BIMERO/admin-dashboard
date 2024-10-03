@@ -51,7 +51,7 @@ const Notifications = () => {
                     align="left"
                     style={{ fontWeight: "bold", textTransform: "uppercase" }}
                   >
-                    Receipients
+                    Recipients
                   </TableCell>
                   <TableCell
                     align="left"

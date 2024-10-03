@@ -103,6 +103,7 @@ const General: React.FC<GeneralProps> = ({
         <input
           type="text"
           id="endpoint"
+          name=""
           value={apiData.endpoint}
           onChange={handleEndpointChange}
           placeholder="/endpoint"

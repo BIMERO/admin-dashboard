@@ -133,7 +133,7 @@ const ApiLogs = () => {
             />
           </div>
 
-          <button
+          {/* <button
             onClick={() => {
               setSearchQuery("");
               setFilterMethod("");
@@ -143,7 +143,7 @@ const ApiLogs = () => {
             }}
           >
             Clear Filters
-          </button>
+          </button> */}
           <button
             style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}
           >

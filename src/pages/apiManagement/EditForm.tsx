@@ -106,6 +106,14 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
     onSave(formData);
   };
 
+  const handleCancel = () => {
+    formData.endpoint = "";
+    formData.method = "";
+    formData.queries = {};
+    formData.payload = {};
+    onClose();
+  };
+
   return (
     <section className="edit-user">
       <div className="edit-user-modal">
@@ -245,9 +253,14 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
               </button>
             </div>
 
-            <button type="submit" className="save-btn">
-              Save
-            </button>
+            <div className="btns" style={{ marginTop: "0px" }}>
+              <button type="submit" className="save-btn">
+                Save
+              </button>
+              <button className="save-btn" onClick={handleCancel}>
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       </div>

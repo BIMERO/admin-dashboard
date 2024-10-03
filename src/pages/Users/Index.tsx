@@ -1,11 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usersData } from "./userData";
 import AddUser from "./AddUser";
 import Users from "./Users";
+import { User } from "../../interfaces/User";
+import { getUsers } from "../../config/apiService";
 
 const UserManagement = () => {
-  const [allUsers, setAllUsers] = useState(usersData);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [addUser, setAddUser] = useState(false);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const userData = await getUsers();
+        setAllUsers(userData.data);
+        console.log(userData.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch users");
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleAddUser = () => {
     setAddUser(true);
@@ -23,13 +44,14 @@ const UserManagement = () => {
   return (
     <div>
       {addUser ? (
-        <AddUser back={back} saveUser={handleSaveUser} />
+        <AddUser back={back} />
       ) : (
         <Users
           allusers={allUsers}
           onAddUser={handleAddUser}
           setAllUsers={setAllUsers}
         />
+        // <></>
       )}
     </div>
   );

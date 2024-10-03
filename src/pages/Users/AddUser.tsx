@@ -5,42 +5,85 @@ import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
-import { FaCircleArrowLeft } from "react-icons/fa6";
+import { FaCircleArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa6";
+import { createUser } from "../../config/apiService";
 
-const roles = ["Admin", "Developer", "Viewer"] as const;
-const statuses = ["Active", "Inactive"] as const;
+const roles = ["admin", "developer", "viewer"] as const;
 
-const AddUser = ({
-  back,
-  saveUser,
-}: {
-  back: () => void;
-  saveUser: (user: User) => void;
-}) => {
+const AddUser = ({ back }: { back: () => void }) => {
   const [newUser, setNewUser] = useState({
-    id: Date.now(),
-    fullName: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    role: "",
-    status: "",
-    lastLogin: moment().format("YYYY-MM-DDTHH:mm:ssZ"),
+    password: "",
+    type: "",
   });
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
-  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
-  const handleRoleSelect = (role: User["role"]) => {
-    setNewUser({ ...newUser, role });
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setConfirmPassword(e.target.value);
+  };
+  const handleRoleSelect = (type: User["type"]) => {
+    setNewUser({ ...newUser, type });
   };
 
-  const handleStatusSelect = (status: User["status"]) => {
-    setNewUser({ ...newUser, status });
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const isPasswordMatch = newUser.password === confirmPassword;
+
+  const handleReset = () => {
+    setNewUser({
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      type: "",
+    });
+    setConfirmPassword("");
+    setError(null);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    saveUser(newUser);
+
+    if (!isPasswordMatch) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const createNewUsers = async () => {
+      setLoading(true);
+      try {
+        const response = await createUser(newUser);
+        console.log(response.data);
+        setLoading(false);
+        window.location.reload();
+      } catch (err) {
+        setError("Failed to create new user");
+        setLoading(false);
+      }
+    };
+    createNewUsers();
   };
 
   return (
@@ -53,22 +96,25 @@ const AddUser = ({
       <form onSubmit={handleSubmit}>
         <div className="flex-inputs">
           <div className="inputs">
-            <label className="">FullName</label>
+            <label className="">First Name</label>
             <input
               type="text"
-              name="fullName"
-              placeholder="Full Name"
-              value={newUser.fullName}
+              name="first_name"
+              placeholder="Enter First Name"
+              value={newUser.first_name}
               onChange={handleInputChange}
               required
             />
           </div>
           <div className="inputs">
-            <label className="">Phone Number</label>
+            <label className="">Last Name</label>
             <input
-              type="number"
-              name="phoneNumber"
-              placeholder="Phone Number"
+              type="text"
+              name="last_name"
+              placeholder="Enter Last Name"
+              value={newUser.last_name}
+              onChange={handleInputChange}
+              required
             />
           </div>
         </div>
@@ -82,6 +128,7 @@ const AddUser = ({
               placeholder="Email"
               value={newUser.email}
               onChange={handleInputChange}
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               required
             />
           </div>
@@ -92,17 +139,35 @@ const AddUser = ({
         </div>
 
         <div className="flex-inputs">
-          <div className="inputs">
+          <div className="password_inputs">
             <label className="">Password</label>
-            <input type="password" name="password" placeholder="Password" />
+            <div className="password-input">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={newUser.password}
+                onChange={handleInputChange}
+                placeholder="Password"
+              />
+              <span onClick={togglePasswordVisibility}>
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
+              </span>
+            </div>
           </div>
-          <div className="inputs">
+          <div className="password_inputs">
             <label className="">Confirm Password</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-            />
+            <div className="password-input">
+              <input
+                type="password"
+                name="confirmPassword"
+                value={confirmPassword}
+                placeholder="Confirm Password"
+                onChange={handleConfirmPasswordChange}
+              />
+              <span onClick={toggleConfirmPasswordVisibility}>
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -112,7 +177,7 @@ const AddUser = ({
             className="dropdown-header"
             onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
           >
-            {newUser.role ? newUser.role : "Selected role"}
+            {newUser.type ? newUser.type : "Selected role"}
             <span>
               {roleDropdownOpen ? (
                 <MdOutlineKeyboardArrowUp style={{ fontSize: "1.125rem" }} />
@@ -138,47 +203,18 @@ const AddUser = ({
           )}
         </div>
 
-        <div className="custom-dropdown">
-          <label>Status</label>
-          <div
-            className="dropdown-header"
-            onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
-          >
-            {newUser.status ? newUser.status : "Selected status"}
-            <span>
-              {statusDropdownOpen ? (
-                <MdOutlineKeyboardArrowUp style={{ fontSize: "1.125rem" }} />
-              ) : (
-                <MdOutlineKeyboardArrowDown style={{ fontSize: "1.125rem" }} />
-              )}
-            </span>
-          </div>
-          {statusDropdownOpen && (
-            <ul className="dropdown-list">
-              {statuses.map((status) => (
-                <li
-                  key={status}
-                  onClick={() => {
-                    setStatusDropdownOpen(false);
-                    handleStatusSelect(status);
-                  }}
-                >
-                  {status}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
         <div className="btns">
           <button type="submit" className="save-btn">
-            Save
+            {loading ? <span>Creating User....</span> : <span>Save</span>}
           </button>
-          <button type="reset" className="save-btn">
+
+          <button type="reset" className="save-btn" onClick={handleReset}>
             Reset
           </button>
         </div>
       </form>
+
+      <p>{error}</p>
     </div>
   );
 };

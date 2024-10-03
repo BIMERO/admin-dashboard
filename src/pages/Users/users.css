@@ -101,7 +101,8 @@
   gap: 1rem;
 }
 
-.add-user .flex-inputs .inputs {
+.add-user .flex-inputs .inputs,
+.add-user .password_inputs .password-input {
   width: 100%;
   max-width: 500px;
 }
@@ -117,6 +118,36 @@
 
 .add-user .custom-dropdown {
   position: relative;
+}
+
+.password_inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+}
+
+.password_inputs label {
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.password_inputs .password-input {
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  outline: none;
+  display: flex;
+  align-items: center;
+}
+
+.password-input input {
+  border: none;
+  outline: none;
+  width: 100%;
+  max-width: 500px;
 }
 
 .edit-user {
@@ -203,9 +234,20 @@
   border-radius: 50%;
   margin: 0.25rem;
   left: 0;
-  transition: all 0.3s ease-in-out;
+  transition: all 1s ease-in-out;
 }
 
+input:checked + .toggle-btn {
+  background-color: #4313ff;
+}
+
+input:checked + .toggle-btn::before {
+  transform: translateX(2.75rem);
+}
+
+.toggle-switch input {
+  display: none;
+}
 /* .toggle-btn.active::before {
   transform: translateX(3rem);
 }

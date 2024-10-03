@@ -10,6 +10,8 @@ import { FaCircleArrowLeft } from "react-icons/fa6";
 import { Endpoints } from "../../../interfaces/Endpoint";
 import { now } from "moment";
 import Queries from "./Queries";
+import { createAPI } from "../../../config/apiService";
+import { APIs } from "../../../interfaces/APIs";
 
 const methodOptions = [
   { label: "GET", value: "GET" },
@@ -27,23 +29,24 @@ const AddNewApi = ({
   saveAPI: (user: any) => void;
 }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const [apiData, setApiData] = useState<Endpoints>({
-    id: Date.now(),
-    baseUrl: "", // no "?" here, since you're initializing it
+  const [apiData, setApiData] = useState<APIs>({
+    id: null,
+    // baseUrl: "", // no "?" here, since you're initializing it
     endpoint: "",
-    responseTime: "",
+    // responseTime: "",
     status: "",
-    timeStamp: "",
+    created_at: "",
     method: "",
     description: "",
     headers: [], // Initialize as an empty array
-    queries: [], // Initialize as an empty array (optional)
-    enabled: true, // Or set to false if you want it disabled by default
-    payload: {}, // Initialize as an empty object (optional)
-    parameters: { limit: 0, offset: 0 }, // Provide default values if needed
-    fullUrls: "",
+    // queries: [], // Initialize as an empty array (optional)
+    payload: [], // Initialize as an empty object (optional)
+    parameters: [], // Provide default values if needed
+    // fullUrls: "",
   });
   const [localBaseUrls, setLocalBaseUrls] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const storedBaseUrls = localStorage.getItem("endpoints");
@@ -100,55 +103,55 @@ const AddNewApi = ({
     setSelectedBaseUrl(selectedBaseUrl);
   };
 
-  const handleSaveApi = () => {
-    console.log("Base URL:", apiData.baseUrl); // Debugging the base URL
-    console.log("Endpoint:", apiData.endpoint); // Debugging the endpoint
-    console.log("Method:", apiData.method);
+  // const handleSaveApi = () => {
+  //   console.log("Base URL:", apiData.baseUrl); // Debugging the base URL
+  //   console.log("Endpoint:", apiData.endpoint); // Debugging the endpoint
+  //   console.log("Method:", apiData.method);
 
-    if (apiData.baseUrl && apiData.endpoint && apiData.method) {
-      const completeUrl = `${apiData.baseUrl}${apiData.endpoint}`;
+  //   if (apiData.baseUrl && apiData.endpoint && apiData.method) {
+  //     const completeUrl = `${apiData.baseUrl}${apiData.endpoint}`;
 
-      // Safely retrieve existing APIResources from localStorage
-      const existingResources = localStorage.getItem("APIResources");
-      console.log("Existing Resources in localStorage:", existingResources);
+  //     // Safely retrieve existing APIResources from localStorage
+  //     const existingResources = localStorage.getItem("APIResources");
+  //     console.log("Existing Resources in localStorage:", existingResources);
 
-      const apiResourcesArray = existingResources
-        ? JSON.parse(existingResources)
-        : [];
+  //     const apiResourcesArray = existingResources
+  //       ? JSON.parse(existingResources)
+  //       : [];
 
-      // Create the new API resource object
-      const newApiResource = {
-        baseUrl: apiData.baseUrl,
-        endpoint: apiData.endpoint,
-        requestType: apiData.method,
-        fullUrl: completeUrl,
-        responseTime: apiData.responseTime,
-        status: apiData.status,
-        timeStamp: apiData.timeStamp,
-        method: apiData.method,
-        description: apiData.description,
-        headers: apiData.headers, // Initialize as an empty array
-        queries: apiData.queries, // Initialize as an empty array (optional)
-        enabled: true, // Or set to false if you want it disabled by default
-        payload: apiData.payload, // Initialize as an empty object (optional)
-        parameters: apiData.parameters, // Provide default values if needed
-        fullUrls: completeUrl,
-      };
+  //     // Create the new API resource object
+  //     const newApiResource = {
+  //       baseUrl: apiData.baseUrl,
+  //       endpoint: apiData.endpoint,
+  //       requestType: apiData.method,
+  //       fullUrl: completeUrl,
+  //       responseTime: apiData.responseTime,
+  //       status: apiData.status,
+  //       timeStamp: apiData.timeStamp,
+  //       method: apiData.method,
+  //       description: apiData.description,
+  //       headers: apiData.headers, // Initialize as an empty array
+  //       queries: apiData.queries, // Initialize as an empty array (optional)
+  //       enabled: true, // Or set to false if you want it disabled by default
+  //       payload: apiData.payload, // Initialize as an empty object (optional)
+  //       parameters: apiData.parameters, // Provide default values if needed
+  //       fullUrls: completeUrl,
+  //     };
 
-      // Add the new API resource to the array
-      apiResourcesArray.push(newApiResource);
+  //     // Add the new API resource to the array
+  //     apiResourcesArray.push(newApiResource);
 
-      // Save the updated array back to localStorage
-      localStorage.setItem("APIResources", JSON.stringify(apiResourcesArray));
+  //     // Save the updated array back to localStorage
+  //     localStorage.setItem("APIResources", JSON.stringify(apiResourcesArray));
 
-      // Log the saved data to confirm it's being stored
-      console.log("Updated APIResources array:", apiResourcesArray);
+  //     // Log the saved data to confirm it's being stored
+  //     console.log("Updated APIResources array:", apiResourcesArray);
 
-      alert("Endpoint saved successfully!");
-    } else {
-      alert("Error");
-    }
-  };
+  //     alert("Endpoint saved successfully!");
+  //   } else {
+  //     alert("Error");
+  //   }
+  // };
 
   const updateApiResourceInLocalStorage = (updatedData: Partial<Endpoints>) => {
     if (!apiData) return;
@@ -172,6 +175,17 @@ const AddNewApi = ({
       };
       localStorage.setItem("APIEndpoints", JSON.stringify(apiResourcesArray));
       setApiData(apiResourcesArray[resourceIndex]); // Update local state as well
+    }
+  };
+
+  const createNewAPI = async () => {
+    try {
+      const response = await createAPI(apiData);
+      console.log(response.data);
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -285,7 +299,7 @@ const AddNewApi = ({
               updateLocalApiData={(updatedData: Partial<Endpoints>) =>
                 updateApiResourceInLocalStorage(updatedData)
               }
-              onLocal={handleSaveApi}
+              // onLocal={handleSaveApi}
             />
           )}
           {activeTab === 5 && (
