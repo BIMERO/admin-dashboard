@@ -89,10 +89,10 @@ export const updateUserStatus = async (
 };
 
 export const filterUsers = async (filterParams: {
-  filterName?: string | null;
-  filterStatus?: string | null;
-  filterEmail?: string | null;
-  filterType?: string | null;
+  filterName?: string | "";
+  filterStatus?: string | "";
+  filterEmail?: string | "";
+  filterType?: string | "";
 }) => {
   try {
     const response = await api.get(`${API_ENDPOINTS.filterUsers}`, {
@@ -177,6 +177,7 @@ export const getAllCallLogs = async () => {
 };
 
 const handleError = (error: any) => {
+  console.log(error);
   console.error("API Error:", error.response?.data?.message || error.message);
   throw new Error(error.response?.data?.message || "Network Error");
 };

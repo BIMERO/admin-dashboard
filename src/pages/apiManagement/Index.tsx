@@ -4,9 +4,10 @@ import APIManagement from "./APIManagement";
 import AddNewApi from "./AddAPI/Index";
 import { Endpoints } from "../../interfaces/Endpoint";
 import { getApis } from "../../config/apiService";
+import { APIs } from "../../interfaces/APIs";
 
 const APIManagementPage = () => {
-  const [allAPIs, setAllAPIs] = useState<Endpoints[]>([]);
+  const [allAPIs, setAllAPIs] = useState<APIs[]>([]);
   const [addAPI, setAddAPI] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +16,7 @@ const APIManagementPage = () => {
     setAddAPI(true);
   };
 
-  const handleSaveAPI = (newAPI: Endpoints) => {
+  const handleSaveAPI = (newAPI: APIs) => {
     setAllAPIs([...allAPIs, newAPI]);
     setAddAPI(false);
   };
@@ -25,7 +26,7 @@ const APIManagementPage = () => {
   };
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchApis = async () => {
       setLoading(true);
       try {
         const userData = await getApis();
@@ -38,7 +39,7 @@ const APIManagementPage = () => {
       }
     };
 
-    fetchUsers();
+    fetchApis();
   }, []);
 
   return (
@@ -50,6 +51,7 @@ const APIManagementPage = () => {
           allAPIs={allAPIs}
           onAddAPI={handleAddApi}
           setAllAPIs={setAllAPIs}
+          loading={loading}
         />
       )}
     </>

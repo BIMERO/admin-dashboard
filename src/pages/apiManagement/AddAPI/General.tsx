@@ -20,13 +20,16 @@ const General: React.FC<GeneralProps> = ({
   next,
 }) => {
   const [error, setError] = useState("");
+  const [endpoint, setEndpoint] = useState("");
+
   const handleEndpointChange = (e: any) => {
     let enteredEndpoint = e.target.value;
 
     if (!enteredEndpoint.startsWith("/")) {
       enteredEndpoint = "/" + enteredEndpoint;
     }
-    updateApiData("endpoint", enteredEndpoint);
+    setEndpoint(enteredEndpoint);
+    updateApiData("endpoint", selectedBaseUrl + enteredEndpoint);
   };
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -37,6 +40,7 @@ const General: React.FC<GeneralProps> = ({
     setIsDropdownOpen(false);
     handleBaseUrlChange(option);
     updateApiData("baseUrl", option);
+    updateApiData("endpoint", option + endpoint);
   };
 
   const methodOptions = [
@@ -64,6 +68,7 @@ const General: React.FC<GeneralProps> = ({
 
   const handleNextClick = () => {
     if (
+      selectedBaseUrl === "" ||
       apiData.endpoint === "" ||
       apiData.method === "" ||
       apiData.description === "" ||

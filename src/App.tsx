@@ -13,6 +13,10 @@ function App() {
     setSidebarOpen((prevState: boolean) => !prevState);
   };
 
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   return (
     <BrowserRouter>
       <div className="">
@@ -31,7 +35,9 @@ function App() {
                     />
                     <div className="main-content">
                       <Navbar toggleSidebar={toggleSidebar} />
-                      <div className="pages">{route.element}</div>
+                      <div className="pages" onClick={closeSidebar}>
+                        {route.element}
+                      </div>
                     </div>
                   </div>
                 }

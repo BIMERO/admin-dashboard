@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./apimanagement.css";
 import { APIs } from "../../interfaces/APIs";
+import { HeaderProps } from "../../interfaces/Headers";
 
 interface EditFormProps {
   row: APIs;
@@ -9,7 +10,25 @@ interface EditFormProps {
 }
 
 const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
-  const [formData, setFormData] = useState<APIs>(row);
+  const [formData, setFormData] = useState({
+    endpoint: row.endpoint,
+    method: row.method,
+    description: row.description,
+    status: row.status,
+    headers: row.headers.map((header: any) => ({
+      name: header.name,
+      samples: header.samples, // or you can join them into a string: samples.join(', ')
+    })),
+    payload: row.payload.map((item: any) => ({
+      key: item.key,
+      value: item.value,
+    })),
+    parameters: row.parameters.map((param: any) => ({
+      // map the parameters if they exist, assuming similar to payload structure
+      key: param.key || "",
+      value: param.value || "",
+    })),
+  });
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -22,9 +41,14 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
     });
   };
 
-  const handleHeadersChange = (index: number, key: string, value: string) => {
+  const handleHeaderChange = (
+    index: number,
+    key: keyof HeaderProps,
+    value: any
+  ) => {
     const updatedHeaders = [...formData.headers];
     updatedHeaders[index] = { ...updatedHeaders[index], [key]: value };
+
     setFormData((prev) => ({
       ...prev,
       headers: updatedHeaders,
@@ -46,57 +70,57 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
     }));
   };
 
-  // const handleParamsChange = (index: number, key: string, value: string) => {
-  //   const updatedParams = [...formData.parameters];
-  //   updatedParams[index] = { ...updatedParams[index], [key]: value };
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     parameters: updatedParams,
-  //   }));
-  // };
+  const handleParamsChange = (index: number, key: string, value: string) => {
+    const updatedParams = [...formData.parameters];
+    updatedParams[index] = { ...updatedParams[index], [key]: value };
+    setFormData((prev) => ({
+      ...prev,
+      parameters: updatedParams,
+    }));
+  };
 
-  // const handleAddParam = () => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     parameters: [...prev.parameters, { key: "", value: "" }],
-  //   }));
-  // };
+  const handleAddParam = () => {
+    setFormData((prev) => ({
+      ...prev,
+      parameters: [...prev.parameters, { key: "", value: "" }],
+    }));
+  };
 
-  // const handleRemoveParam = (index: number) => {
-  //   const updatedParams = formData.parameters.filter((_, i) => i !== index);
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     parameters: updatedParams,
-  //   }));
-  // };
+  const handleRemoveParam = (index: number) => {
+    const updatedParams = formData.parameters.filter((_, i) => i !== index);
+    setFormData((prev) => ({
+      ...prev,
+      parameters: updatedParams,
+    }));
+  };
 
-  // const handlePayloadChange = (index: number, key: string, value: string) => {
-  //   const updatedPayload = [...formData.payload];
-  //   updatedPayload[index] = { ...updatedPayload[index], [key]: value };
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     payload: updatedPayload,
-  //   }));
-  // };
+  const handlePayloadChange = (index: number, key: string, value: string) => {
+    const updatedPayload = [...formData.payload];
+    updatedPayload[index] = { ...updatedPayload[index], [key]: value };
+    setFormData((prev) => ({
+      ...prev,
+      payload: updatedPayload,
+    }));
+  };
 
-  // const handleAddPayloadField = () => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     payload: [...prev.payload, { key: "", value: "" }],
-  //   }));
-  // };
+  const handleAddPayloadField = () => {
+    setFormData((prev) => ({
+      ...prev,
+      payload: [...prev.payload, { key: "", value: "" }],
+    }));
+  };
 
-  // const handleRemovePayloadField = (index: number) => {
-  //   const updatedPayload = formData.payload.filter((_, i) => i !== index);
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     payload: updatedPayload,
-  //   }));
-  // };
+  const handleRemovePayloadField = (index: number) => {
+    const updatedPayload = formData.payload.filter((_, i) => i !== index);
+    setFormData((prev) => ({
+      ...prev,
+      payload: updatedPayload,
+    }));
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    // onSave(formData);
   };
 
   const handleCancel = () => {
@@ -165,7 +189,7 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
                     placeholder="Header Name"
                     value={header.name}
                     onChange={(e) =>
-                      handleHeadersChange(index, "name", e.target.value)
+                      handleHeaderChange(index, "name", e.target.value)
                     }
                     style={{ marginBottom: "1rem" }}
                   />
@@ -174,7 +198,7 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
                     placeholder="Header Sample"
                     value={header.samples[0]}
                     onChange={(e) =>
-                      handleHeadersChange(index, "samples", [e.target.value])
+                      handleHeaderChange(index, "samples", [e.target.value])
                     }
                   />
                   <button
@@ -195,7 +219,7 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
             </div>
 
             {/* Params Section */}
-            {/* <div className="inputs">
+            <div className="inputs">
               <label>Params</label>
               {formData.parameters.map((param, index) => (
                 <div key={index} className="param-pair">
@@ -230,10 +254,10 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
               >
                 Add Param
               </button>
-            </div> */}
+            </div>
 
             {/* Payload Section */}
-            {/* {formData.method === "post" && (
+            {formData.method === "post" && (
               <div className="inputs">
                 <label>Payload</label>
                 {formData.payload.map((payloadField, index) => (
@@ -270,7 +294,7 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
                   Add Payload Field
                 </button>
               </div>
-            )} */}
+            )}
 
             <div className="btns" style={{ marginTop: "0px" }}>
               <button type="submit" className="save-btn">

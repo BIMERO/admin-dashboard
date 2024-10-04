@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { getApis } from "../../config/apiService";
 
 const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
+  const [allAPIs, setAllAPIs] = useState<any[]>([]);
   const [apiResources, setApiResources] = useState<any[]>([]);
   const [selectedResource, setSelectedResource] = useState<any | null>(null);
   const [response, setResponse] = useState<string | null>(null);
@@ -14,13 +16,31 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
     {}
   ); // State for POST payloads
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [loading, setLoading] = useState(false); // State for loading
 
   // Fetch API resources from localStorage on mount
+  // useEffect(() => {
+  //   const storedApiResources = localStorage.getItem("APIResources");
+  //   if (storedApiResources) {
+  //     setApiResources(JSON.parse(storedApiResources));
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const storedApiResources = localStorage.getItem("APIResources");
-    if (storedApiResources) {
-      setApiResources(JSON.parse(storedApiResources));
-    }
+    const fetchApis = async () => {
+      setLoading(true);
+      try {
+        const userData = await getApis();
+        setAllAPIs(userData.data);
+        console.log(userData.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch APIs");
+        setLoading(false);
+      }
+    };
+
+    fetchApis();
   }, []);
 
   // Detect placeholders in the URL and initialize query parameters
@@ -38,16 +58,25 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
   };
 
   const handleSelectOption = (option: any) => {
-    setSelectedOption(option.fullUrl);
+    setSelectedOption(option.endpoint);
     setSelectedResource(option);
     setIsDropdownOpen(false);
 
     // Extract placeholders from the selected fullUrl
-    extractPlaceholders(option.fullUrl);
+    extractPlaceholders(option.endpoint);
 
     // Fetch payload from localStorage and set it
-    const storedPayload = option.payload || {};
-    setPayloadFields(storedPayload); // Set the payload fields from the selected resource
+    const storedPayload = option.payload.reduce(
+      (
+        acc: { [key: string]: string },
+        field: { key: string; value: string }
+      ) => {
+        acc[field.key] = field.value;
+        return acc;
+      },
+      {}
+    );
+    setPayloadFields(storedPayload);
   };
 
   const handleQueryChange = (key: string, value: string) => {
@@ -68,21 +97,25 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
     if (!selectedResource) return;
 
     // Replace placeholders with the user input from queryParams
-    let fullUrl = selectedResource.fullUrl;
+    let fullUrl = selectedResource.endpoint;
+    console.log("fullUrl", fullUrl);
     Object.keys(queryParams).forEach((key) => {
       fullUrl = fullUrl.replace(`{${key}}`, queryParams[key]);
     });
 
+    console.log("fullUrl", fullUrl);
+
     try {
       const res = await axios({
-        method: selectedResource.requestType.toLowerCase(),
+        method: selectedResource.method,
         url: fullUrl,
         data:
-          selectedResource.requestType.toLowerCase() === "post"
+          selectedResource.method.toLowerCase() === "post"
             ? payloadFields
             : undefined, // Include payload for POST requests
       });
       setResponse(JSON.stringify(res.data, null, 2));
+      console.log(res);
       setError(null);
     } catch (err) {
       setResponse("Error occurred while making API call.");
@@ -90,8 +123,8 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
     }
   };
 
-  const filteredBaseUrls = apiResources.filter((resources) =>
-    resources.fullUrl.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredBaseUrls = allAPIs.filter((resources) =>
+    resources.endpoint.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -134,7 +167,7 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
               </li>
               {filteredBaseUrls.map((option, index) => (
                 <li key={index} onClick={() => handleSelectOption(option)}>
-                  {option.fullUrl} ({option.requestType})
+                  {option.endpoint} ({option.method.toUpperCase()})
                 </li>
               ))}
             </ul>
@@ -161,7 +194,7 @@ const MakeAPICall = ({ handleCloseCall }: { handleCloseCall: () => void }) => {
 
         {/* Input fields for POST payload if the request type is POST */}
         {selectedResource &&
-          selectedResource.requestType.toLowerCase() === "post" && (
+          selectedResource.method.toLowerCase() === "post" && (
             <div>
               <h3 style={{ marginBottom: "1rem" }}>Payload</h3>
               {Object.keys(payloadFields).map((key, index) => (

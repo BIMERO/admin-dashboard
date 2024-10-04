@@ -92,10 +92,10 @@ const Users = ({
 
   const handleFilter = async () => {
     const filters = {
-      filterName: filterName || null,
-      filterStatus: filterStatus || null,
-      filterEmail: filterEmail || null,
-      filterType: filterType || null,
+      filterName: filterName || "",
+      filterStatus: filterStatus || "",
+      filterEmail: filterEmail || "",
+      filterType: filterType || "",
     };
     const response = await filterUsers(filters);
     setFilteredUsers(response.data);
