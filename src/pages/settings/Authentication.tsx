@@ -6,15 +6,18 @@ const Authentication = () => {
       <h1>Authentication Setting</h1>
       <div className="global-form">
         <form action="">
-          <div className="inputs">
-            <label>Token Expiry (hours)</label>
-            <input type="text" placeholder="Enter token expiry" />
+          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+            <div className="inputs">
+              <label>Token Expiry (hours)</label>
+              <input type="text" placeholder="Enter token expiry" disabled />
+            </div>
+            <button>refresh</button>
           </div>
 
-          <div className="inputs">
+          {/* <div className="inputs">
             <label>OAuth Settings</label>
             <input type="text" placeholder="Enter OAuth Providers" />
-          </div>
+          </div> */}
         </form>
       </div>
     </section>

@@ -89,10 +89,10 @@ export const updateUserStatus = async (
 };
 
 export const filterUsers = async (filterParams: {
-  filterName?: string;
-  filterStatus?: string;
-  filterEmail?: string;
-  filterType?: string;
+  filterName?: string | null;
+  filterStatus?: string | null;
+  filterEmail?: string | null;
+  filterType?: string | null;
 }) => {
   try {
     const response = await api.get(`${API_ENDPOINTS.filterUsers}`, {
@@ -114,11 +114,6 @@ export const getApis = async () => {
   }
 };
 
-const handleError = (error: any) => {
-  console.error("API Error:", error.response?.data?.message || error.message);
-  throw new Error(error.response?.data?.message || "Network Error");
-};
-
 //create new api
 export const createAPI = async (credentials: {
   endpoint: string;
@@ -130,9 +125,58 @@ export const createAPI = async (credentials: {
   parameters: [];
 }) => {
   try {
-    const response = await api.post(API_ENDPOINTS.createNewUser, credentials);
+    const response = await api.post(API_ENDPOINTS.createNewApi, credentials);
     return response.data;
   } catch (error) {
     handleError(error);
   }
+};
+
+//edit api
+export const getEditApi = async (id: number) => {
+  try {
+    const response = await api.get(`${API_ENDPOINTS.editApi(id)}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+//Update api
+export const updateApi = async (
+  id: number,
+  credentials: {
+    endpoint: string;
+    method: string;
+    description: string;
+    status: string;
+    headers: [];
+    payload: [];
+    parameters: [];
+  }
+) => {
+  try {
+    const response = await api.post(
+      `${API_ENDPOINTS.updateApis(id)}`,
+      credentials
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+//api call logs
+export const getAllCallLogs = async () => {
+  try {
+    const response = await api.get(API_ENDPOINTS.getAllCallLogs);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+const handleError = (error: any) => {
+  console.error("API Error:", error.response?.data?.message || error.message);
+  throw new Error(error.response?.data?.message || "Network Error");
 };

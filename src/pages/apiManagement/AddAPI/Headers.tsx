@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { HeaderProps } from "../../../interfaces/Headers";
 import { HeadersData } from "../../../headers";
 
-const Headers = ({ apiData, updateApiData, next, updateLocalApiData }: any) => {
+const Headers = ({ apiData, updateApiData, next }: any) => {
   const [newHeader, setNewHeader] = useState<HeaderProps>({
     name: "",
     samples: [],
   });
   const [selectedSample, setSelectedSample] = useState<string>("");
+  const [error, setError] = useState("");
 
   const handleHeaderChange = (
     index: number,
@@ -17,14 +18,12 @@ const Headers = ({ apiData, updateApiData, next, updateLocalApiData }: any) => {
     const updatedHeaders = [...apiData.headers];
     updatedHeaders[index] = { ...updatedHeaders[index], [key]: value };
     updateApiData("headers", updatedHeaders);
-    updateLocalApiData("headers", updatedHeaders);
   };
 
   const handleAddHeader = () => {
     if (newHeader.name && selectedSample) {
       const updatedHeader = { ...newHeader, samples: [selectedSample] };
       updateApiData("headers", [...apiData.headers, updatedHeader]);
-      updateLocalApiData("headers", [...apiData.headers, updatedHeader]);
       setNewHeader({
         name: "",
         samples: [],
@@ -38,7 +37,6 @@ const Headers = ({ apiData, updateApiData, next, updateLocalApiData }: any) => {
       (_: HeaderProps, i: number) => i !== index
     );
     updateApiData("headers", updatedHeaders);
-    updateLocalApiData("headers", updatedHeaders);
   };
 
   const availableHeaders = HeadersData.filter(
@@ -48,13 +46,22 @@ const Headers = ({ apiData, updateApiData, next, updateLocalApiData }: any) => {
       )
   );
 
+  const handleNextClick = () => {
+    if (apiData.headers.length > 0) {
+      next();
+    } else {
+      // Show error message
+      setError("Please add at least one header");
+    }
+  };
+
   return (
     <div className="headers-container">
       <h2 style={{ marginBottom: "2rem" }}>Headers</h2>
       {apiData.headers.map((header: HeaderProps, index: number) => (
         <div
           key={index}
-          className="input-flex"
+          className="add-header"
           style={{ marginBottom: "6rem" }}
         >
           <div className="inputs">
@@ -94,7 +101,7 @@ const Headers = ({ apiData, updateApiData, next, updateLocalApiData }: any) => {
         </div>
       ))}
 
-      <div className="input-flex">
+      <div className="add-header">
         <div className="inputs">
           <label htmlFor="headerName">Header Name</label>
           <select
@@ -134,14 +141,15 @@ const Headers = ({ apiData, updateApiData, next, updateLocalApiData }: any) => {
             ))}
           </select>
         </div>
+        <button onClick={handleAddHeader} className="header-btn">
+          Add Header
+        </button>
       </div>
 
-      <button onClick={handleAddHeader} className="header-btn">
-        Add Header
-      </button>
+      <p style={{ textAlign: "center", color: "red" }}>{error}</p>
 
       <button
-        onClick={next}
+        onClick={handleNextClick}
         className="header-btn"
         style={{ marginTop: "4rem" }}
       >

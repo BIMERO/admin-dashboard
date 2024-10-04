@@ -9,7 +9,6 @@ interface GeneralProps {
   method: string;
   onMethodChange: any;
   next: any;
-  updateLocalApiData: any;
 }
 
 const General: React.FC<GeneralProps> = ({
@@ -19,8 +18,8 @@ const General: React.FC<GeneralProps> = ({
   method,
   onMethodChange,
   next,
-  updateLocalApiData,
 }) => {
+  const [error, setError] = useState("");
   const handleEndpointChange = (e: any) => {
     let enteredEndpoint = e.target.value;
 
@@ -28,7 +27,6 @@ const General: React.FC<GeneralProps> = ({
       enteredEndpoint = "/" + enteredEndpoint;
     }
     updateApiData("endpoint", enteredEndpoint);
-    updateLocalApiData("endpoint", enteredEndpoint);
   };
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -39,15 +37,19 @@ const General: React.FC<GeneralProps> = ({
     setIsDropdownOpen(false);
     handleBaseUrlChange(option);
     updateApiData("baseUrl", option);
-    updateLocalApiData("baseUrl", option);
   };
 
   const methodOptions = [
-    { label: "GET", value: "GET" },
-    { label: "POST", value: "POST" },
-    { label: "PUT", value: "PUT" },
-    { label: "DELETE", value: "DELETE" },
-    { label: "PATCH", value: "PATCH" },
+    { label: "GET", value: "get" },
+    { label: "POST", value: "post" },
+    { label: "PUT", value: "put" },
+    { label: "DELETE", value: "delete" },
+    { label: "PATCH", value: "patch" },
+  ];
+
+  const enableOptions = [
+    { label: "Enabled", value: "enabled" },
+    { label: "Disabled", value: "disabled" },
   ];
 
   const [selectedBaseUrl, setSelectedBaseUrl] = useState("");
@@ -56,8 +58,22 @@ const General: React.FC<GeneralProps> = ({
     setSelectedBaseUrl(selectedBaseUrl);
   };
 
-  const handleNext = () => {
-    next();
+  const handleSelectStatus = (selectedOption: string) => {
+    updateApiData("status", selectedOption); // Update the status in apiData
+  };
+
+  const handleNextClick = () => {
+    if (
+      apiData.endpoint === "" ||
+      apiData.method === "" ||
+      apiData.description === "" ||
+      apiData.status === ""
+    ) {
+      setError("Please fill out all required fields.");
+    } else {
+      setError("");
+      next(); // Move to the next tab
+    }
   };
 
   return (
@@ -103,7 +119,7 @@ const General: React.FC<GeneralProps> = ({
         <input
           type="text"
           id="endpoint"
-          name=""
+          name="endpoint"
           value={apiData.endpoint}
           onChange={handleEndpointChange}
           placeholder="/endpoint"
@@ -113,8 +129,15 @@ const General: React.FC<GeneralProps> = ({
       <CustomSelect
         options={methodOptions}
         placeholder="Select Method"
-        value={method}
+        value={apiData.method}
         onSelect={onMethodChange}
+      />
+
+      <CustomSelect
+        options={enableOptions}
+        placeholder="Select Status"
+        value={apiData.status}
+        onSelect={handleSelectStatus}
       />
 
       <div className="inputs" style={{ marginTop: "1.25rem" }}>
@@ -127,8 +150,10 @@ const General: React.FC<GeneralProps> = ({
         />
       </div>
 
+      <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>
+
       <button
-        onClick={handleNext}
+        onClick={handleNextClick}
         className="header-btn"
         style={{ marginTop: "4rem" }}
       >

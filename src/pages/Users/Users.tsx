@@ -92,10 +92,10 @@ const Users = ({
 
   const handleFilter = async () => {
     const filters = {
-      filterName: filterName || undefined,
-      filterStatus: filterStatus || undefined,
-      filterEmail: filterEmail || undefined,
-      filterType: filterType || undefined,
+      filterName: filterName || null,
+      filterStatus: filterStatus || null,
+      filterEmail: filterEmail || null,
+      filterType: filterType || null,
     };
     const response = await filterUsers(filters);
     setFilteredUsers(response.data);
@@ -212,7 +212,7 @@ const Users = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredUsers.map((user) => (
+                  {allusers.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell align="left">{user.id}</TableCell>
                       <TableCell align="left">{`${user.first_name} ${user.last_name}`}</TableCell>

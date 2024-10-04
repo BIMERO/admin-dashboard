@@ -18,7 +18,7 @@ const Settings = () => {
     <section className="settings">
       <h1>Settings</h1>
       <div className="settings-container">
-        <div className="settings-tabs">
+        <div className="settings-tabs" style={{ justifyContent: "flex-start" }}>
           <span
             onClick={() => handleTabClick(0)}
             className={activeTab === 0 ? "active" : ""}
@@ -33,14 +33,14 @@ const Settings = () => {
           >
             Authentication
           </span>
-          <span
+          {/* <span
             onClick={() => handleTabClick(2)}
             className={activeTab === 2 ? "active" : ""}
             style={{ cursor: "pointer" }}
           >
             Security
-          </span>
-          <span
+          </span> */}
+          {/* <span
             onClick={() => handleTabClick(3)}
             className={activeTab === 3 ? "active" : ""}
             style={{ cursor: "pointer" }}
@@ -67,17 +67,17 @@ const Settings = () => {
             style={{ cursor: "pointer" }}
           >
             Version Control
-          </span>
+          </span> */}
         </div>
 
         <div className="settings-content">
           {activeTab === 0 && <Global />}
           {activeTab === 1 && <Authentication />}
-          {activeTab === 2 && <Security />}
+          {/* {activeTab === 2 && <Security />}
           {activeTab === 3 && <Logging />}
           {activeTab === 4 && <Performance />}
           {activeTab === 5 && <ErrorHandling />}
-          {activeTab === 6 && <VersionControl />}
+          {activeTab === 6 && <VersionControl />} */}
         </div>
       </div>
     </section>

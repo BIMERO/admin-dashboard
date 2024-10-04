@@ -13,6 +13,8 @@ import EditForm from "./EditForm";
 import { FaUserPlus } from "react-icons/fa6";
 import { HeaderProps } from "../../interfaces/Headers";
 import { Endpoints } from "../../interfaces/Endpoint";
+import { getEditApi } from "../../config/apiService";
+import { APIs } from "../../interfaces/APIs";
 
 const APIManagement = ({
   allAPIs,
@@ -20,24 +22,25 @@ const APIManagement = ({
   setAllAPIs,
 }: {
   allAPIs: any[];
-  setAllAPIs: React.Dispatch<React.SetStateAction<Endpoints[]>>;
+  setAllAPIs: React.Dispatch<React.SetStateAction<APIs[]>>;
   onAddAPI: () => void;
 }) => {
   const [dropdown, setDropdown] = useState<number | null>(null);
-  const [selectedAPI, setSelectedAPI] = useState<Endpoints | null>(null);
+  const [selectedAPI, setSelectedAPI] = useState<APIs | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
 
   const handleDropdownToggle = (userId: number) => {
     setDropdown(dropdown === userId ? null : userId);
   };
 
-  const handleEdit = (user: Endpoints) => {
-    setSelectedAPI(user);
+  const handleApiEdit = async (userId: number) => {
+    const response = await getEditApi(userId);
+    setSelectedAPI(response.data);
     setShowEditModal(true);
     setDropdown(null);
   };
 
-  const handleSaveEdit = (updatedAPI: Endpoints) => {
+  const handleSaveEdit = (updatedAPI: APIs) => {
     setAllAPIs((prevAPIs) =>
       prevAPIs.map((api) => (api.id === updatedAPI.id ? updatedAPI : api))
     );
@@ -142,7 +145,9 @@ const APIManagement = ({
                           {dropdown === endpoint.id && (
                             <>
                               <div className="dropdown">
-                                <p onClick={() => handleEdit(endpoint)}>Edit</p>
+                                <p onClick={() => handleApiEdit(endpoint.id)}>
+                                  Edit
+                                </p>
                                 <p onClick={() => handleDelete(endpoint.id)}>
                                   Delete
                                 </p>

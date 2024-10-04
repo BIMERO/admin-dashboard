@@ -1,17 +1,10 @@
 import React from "react";
 import CustomSelect from "../../../components/customSelect/CustomSelect";
 
-const Authorization = ({
-  apiData,
-  updateApiData,
-  next,
-  onSave,
-  onLocal,
-}: any) => {
+const Authorization = ({ apiData, updateApiData, next }: any) => {
   const authOptions = [
     { label: "Basic Auth", value: "basic" },
     { label: "Bearer Token", value: "bearer" },
-    { label: "OAuth 2.0", value: "oauth2" },
   ];
 
   const handleAuthChange = (key: any, value: any) => {
@@ -19,6 +12,10 @@ const Authorization = ({
       ...apiData.headers,
       [key]: value,
     });
+  };
+
+  const handleNextClick = () => {
+    next();
   };
 
   return (
@@ -74,13 +71,12 @@ const Authorization = ({
       </div>
 
       <button
-        onClick={onSave}
+        onClick={handleNextClick}
         className="header-btn"
         style={{ marginTop: "4rem" }}
       >
         Next
       </button>
-      <button onClick={onLocal}>local</button>
     </div>
   );
 };

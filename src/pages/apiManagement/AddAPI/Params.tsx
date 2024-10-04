@@ -4,21 +4,34 @@ const Params = ({ apiData, updateApiData, onSave }: any) => {
   const [newParamKey, setNewParamKey] = useState("");
   const [newParamValue, setNewParamValue] = useState("");
 
+  // const handleAddParam = () => {
+  //   if (newParamKey && newParamValue) {
+  //     const updatedParams = {
+  //       ...apiData.parameters,
+  //        { key: newParamKey, value: newParamValue },
+  //     };
+  //     updateApiData("parameters", updatedParams);
+  //     setNewParamKey("");
+  //     setNewParamValue("");
+  //   }
+  // };
+
   const handleAddParam = () => {
     if (newParamKey && newParamValue) {
-      const updatedParams = {
+      const updatedParams = [
         ...apiData.parameters,
-        [newParamKey]: newParamValue,
-      };
+        { key: newParamKey, value: newParamValue },
+      ];
       updateApiData("parameters", updatedParams);
       setNewParamKey("");
       setNewParamValue("");
     }
   };
 
-  const handleRemoveParam = (keyToRemove: any) => {
-    const updatedParams = { ...apiData.parameters };
-    delete updatedParams[keyToRemove];
+  const handleRemoveParam = (indexToRemove: number) => {
+    const updatedParams = apiData.parameters.filter(
+      (_: any, index: number) => index !== indexToRemove
+    );
     updateApiData("parameters", updatedParams);
   };
 
@@ -51,19 +64,20 @@ const Params = ({ apiData, updateApiData, onSave }: any) => {
       <div className="current-params">
         <h3>Current Params:</h3>
         <ul>
-          {Object.keys(apiData.parameters || {}).map((key) => (
-            <li key={key}>
-              <span>
-                {key}: {apiData.parameters[key]}
-              </span>
-              <button
-                className="header-btn"
-                onClick={() => handleRemoveParam(key)}
-              >
-                Remove
-              </button>
-            </li>
-          ))}
+          {apiData.parameters &&
+            apiData.parameters.map((param: any, index: number) => (
+              <li key={index}>
+                <span>
+                  {param.key}: {param.value}
+                </span>
+                <button
+                  className="header-btn"
+                  onClick={() => handleRemoveParam(index)}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
         </ul>
       </div>
 

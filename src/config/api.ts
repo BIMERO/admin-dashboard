@@ -12,4 +12,10 @@ export const API_ENDPOINTS = {
   //apis
   getApis: `${BASE_URL}/apis`,
   createNewApi: `${BASE_URL}/apis/store`,
+  editApi: (id: Number) => `${BASE_URL}/apis/edit/${id}`,
+  updateApis: (id: Number) => `${BASE_URL}/apis/update/${id}`,
+
+  //call-logs
+  getAllCallLogs: `${BASE_URL}/call-logs`,
+  // createCallLog:
 };

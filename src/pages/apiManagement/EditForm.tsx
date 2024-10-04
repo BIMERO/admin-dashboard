@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import "./apimanagement.css";
-import { Endpoints, EndpointParameter } from "../../interfaces/Endpoint";
+import { APIs } from "../../interfaces/APIs";
 
 interface EditFormProps {
-  row: Endpoints;
-  onSave: (updatedRow: Endpoints) => void;
+  row: APIs;
+  onSave: (updatedRow: APIs) => void;
   onClose: () => void;
 }
 
 const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
-  const [formData, setFormData] = useState<Endpoints>(row);
+  const [formData, setFormData] = useState<APIs>(row);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -34,7 +34,7 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
   const handleAddHeader = () => {
     setFormData((prev) => ({
       ...prev,
-      headers: [...prev.headers, { name: "", samples: [] }],
+      headers: [...prev.headers, { name: "", samples: [""] }],
     }));
   };
 
@@ -46,60 +46,53 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
     }));
   };
 
-  const handleParamsChange = (key: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      queries: {
-        ...(prev.queries as { [key: string]: string }), // Assert the type
-        [key]: value, // Update the key-value pair in the object
-      },
-    }));
-  };
+  // const handleParamsChange = (index: number, key: string, value: string) => {
+  //   const updatedParams = [...formData.parameters];
+  //   updatedParams[index] = { ...updatedParams[index], [key]: value };
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     parameters: updatedParams,
+  //   }));
+  // };
 
-  const handleAddParam = () => {
-    setFormData((prev) => ({
-      ...prev,
-      queries: {
-        ...(prev.queries || {}),
-        newParam: "", // Add a new query param with an empty value
-      },
-    }));
-  };
+  // const handleAddParam = () => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     parameters: [...prev.parameters, { key: "", value: "" }],
+  //   }));
+  // };
 
-  const handleRemoveParam = (key: string) => {
-    // Ensure queries is treated as an object
-    if (
-      typeof formData.queries === "object" &&
-      !Array.isArray(formData.queries)
-    ) {
-      const { [key]: _, ...updatedQueries } = formData.queries;
-      setFormData((prev) => ({
-        ...prev,
-        queries: updatedQueries as { [key: string]: string }, // Cast to correct type
-      }));
-    } else {
-      // If queries are an array, handle that case here
-      // Assuming a different approach might be needed for array type
-      console.error("Cannot remove param from array-based queries.");
-    }
-  };
+  // const handleRemoveParam = (index: number) => {
+  //   const updatedParams = formData.parameters.filter((_, i) => i !== index);
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     parameters: updatedParams,
+  //   }));
+  // };
 
-  const handlePayloadChange = (key: string, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      payload: { ...prev.payload, [key]: value },
-    }));
-  };
+  // const handlePayloadChange = (index: number, key: string, value: string) => {
+  //   const updatedPayload = [...formData.payload];
+  //   updatedPayload[index] = { ...updatedPayload[index], [key]: value };
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     payload: updatedPayload,
+  //   }));
+  // };
 
-  const handleAddPayloadField = () => {
-    setFormData((prev) => ({
-      ...prev,
-      payload: {
-        ...(prev.payload || {}),
-        [`field${Object.keys(prev.payload || {}).length + 1}`]: "",
-      },
-    }));
-  };
+  // const handleAddPayloadField = () => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     payload: [...prev.payload, { key: "", value: "" }],
+  //   }));
+  // };
+
+  // const handleRemovePayloadField = (index: number) => {
+  //   const updatedPayload = formData.payload.filter((_, i) => i !== index);
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     payload: updatedPayload,
+  //   }));
+  // };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,15 +100,11 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
   };
 
   const handleCancel = () => {
-    formData.endpoint = "";
-    formData.method = "";
-    formData.queries = {};
-    formData.payload = {};
     onClose();
   };
 
   return (
-    <section className="edit-user">
+    <section className="edit-user" style={{ minHeight: "100vh" }}>
       <div className="edit-user-modal">
         <div className="edit-form">
           <h2 style={{ marginBottom: "2rem" }}>Edit API</h2>
@@ -125,7 +114,7 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
               <input
                 type="text"
                 name="baseUrl"
-                value={formData.baseUrl}
+                // value={baseUrl}
                 onChange={handleChange}
                 className="w-full px-2 py-1 border rounded"
               />
@@ -148,11 +137,11 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
                 className="select"
                 onChange={handleChange}
               >
-                <option value="GET">GET</option>
-                <option value="POST">POST</option>
-                <option value="PUT">PUT</option>
-                <option value="DELETE">DELETE</option>
-                <option value="PATCH">PATCH</option>
+                <option value="get">GET</option>
+                <option value="post">POST</option>
+                <option value="put">PUT</option>
+                <option value="delete">DELETE</option>
+                <option value="patch">PATCH</option>
               </select>
             </div>
 
@@ -180,78 +169,108 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
                     }
                     style={{ marginBottom: "1rem" }}
                   />
-                  <button onClick={() => handleRemoveHeader(index)}>
+                  <input
+                    type="text"
+                    placeholder="Header Sample"
+                    value={header.samples[0]}
+                    onChange={(e) =>
+                      handleHeadersChange(index, "samples", [e.target.value])
+                    }
+                  />
+                  <button
+                    onClick={() => handleRemoveHeader(index)}
+                    className="save-btn"
+                  >
                     Remove Header
                   </button>
                 </div>
               ))}
-              <button type="button" onClick={handleAddHeader}>
+              <button
+                type="button"
+                onClick={handleAddHeader}
+                className="save-btn"
+              >
                 Add Header
               </button>
             </div>
 
-            {/* Conditional Payload Section for POST requests */}
-            {formData.method === "POST" && (
+            {/* Params Section */}
+            {/* <div className="inputs">
+              <label>Params</label>
+              {formData.parameters.map((param, index) => (
+                <div key={index} className="param-pair">
+                  <input
+                    type="text"
+                    placeholder="Param Key"
+                    value={param.key}
+                    onChange={(e) =>
+                      handleParamsChange(index, "key", e.target.value)
+                    }
+                  />
+                  <input
+                    type="text"
+                    placeholder="Param Value"
+                    value={param.value}
+                    onChange={(e) =>
+                      handleParamsChange(index, "value", e.target.value)
+                    }
+                  />
+                  <button
+                    onClick={() => handleRemoveParam(index)}
+                    className="save-btn"
+                  >
+                    Remove Param
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddParam}
+                className="save-btn"
+              >
+                Add Param
+              </button>
+            </div> */}
+
+            {/* Payload Section */}
+            {/* {formData.method === "post" && (
               <div className="inputs">
                 <label>Payload</label>
-                {Object.entries(formData.payload || {}).map(([key, value]) => (
-                  <div key={key} className="payload-pair">
-                    <input type="text" placeholder="Key" value={key} readOnly />
+                {formData.payload.map((payloadField, index) => (
+                  <div key={index} className="payload-pair">
                     <input
                       type="text"
-                      placeholder="Value"
-                      value={value}
-                      onChange={(e) => handlePayloadChange(key, e.target.value)}
-                    />
-                  </div>
-                ))}
-                <button type="button" onClick={handleAddPayloadField}>
-                  Add Payload Field
-                </button>
-              </div>
-            )}
-
-            {/* Query Parameters Section */}
-            <div className="inputs">
-              <label>Query Parameters</label>
-              {formData.queries &&
-                typeof formData.queries === "object" &&
-                !Array.isArray(formData.queries) &&
-                Object.entries(formData.queries).map(([key, value], index) => (
-                  <div key={index} className="param-pair">
-                    <input
-                      type="text"
-                      placeholder="Query Name"
-                      value={key}
-                      onChange={(e) => {
-                        const newKey = e.target.value;
-                        const updatedQueries = {
-                          ...(formData.queries as { [key: string]: string }),
-                        }; // Assert the type
-                        delete updatedQueries[key]; // Remove the old key
-                        updatedQueries[newKey] = value; // Add the new key with the old value
-                        setFormData((prev) => ({
-                          ...prev,
-                          queries: updatedQueries,
-                        }));
-                      }}
+                      placeholder="Payload Key"
+                      value={payloadField.key}
+                      onChange={(e) =>
+                        handlePayloadChange(index, "key", e.target.value)
+                      }
                     />
                     <input
                       type="text"
-                      placeholder="Query Value"
-                      value={value}
-                      onChange={(e) => handleParamsChange(key, e.target.value)}
+                      placeholder="Payload Value"
+                      value={payloadField.value}
+                      onChange={(e) =>
+                        handlePayloadChange(index, "value", e.target.value)
+                      }
                     />
-                    <button onClick={() => handleRemoveParam(key)}>
-                      Remove Query
+                    <button
+                      onClick={() => handleRemovePayloadField(index)}
+                      className="save-btn"
+                    >
+                      Remove Payload Field
                     </button>
                   </div>
                 ))}
-
-              <button type="button" onClick={handleAddParam}>
-                Add Query Parameter
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={handleAddPayloadField}
+                  className="save-btn"
+                >
+                  Add Payload Field
+                </button>
+              </div>
+            )} */}
 
             <div className="btns" style={{ marginTop: "0px" }}>
               <button type="submit" className="save-btn">
