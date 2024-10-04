@@ -147,7 +147,7 @@ const Sidebar = ({
           <ul>
             <li>
               <NavLink
-                to={"logout"}
+                to={"/"}
                 className={({ isActive }) => (isActive ? "active" : "")}
                 onClick={toggleSidebar}
               >

@@ -128,7 +128,7 @@ const EditForm: React.FC<EditFormProps> = ({ row, onSave, onClose }) => {
   };
 
   return (
-    <section className="edit-user" style={{ minHeight: "100vh" }}>
+    <section className="edit-user" style={{ maxHeight: "fit-content" }}>
       <div className="edit-user-modal">
         <div className="edit-form">
           <h2 style={{ marginBottom: "2rem" }}>Edit API</h2>

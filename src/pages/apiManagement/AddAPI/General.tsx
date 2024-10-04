@@ -21,6 +21,9 @@ const General: React.FC<GeneralProps> = ({
 }) => {
   const [error, setError] = useState("");
   const [endpoint, setEndpoint] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedBaseUrl, setSelectedBaseUrl] = useState("");
 
   const handleEndpointChange = (e: any) => {
     let enteredEndpoint = e.target.value;
@@ -32,14 +35,11 @@ const General: React.FC<GeneralProps> = ({
     updateApiData("endpoint", selectedBaseUrl + enteredEndpoint);
   };
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
     setIsDropdownOpen(false);
-    handleBaseUrlChange(option);
-    updateApiData("baseUrl", option);
+    setSelectedBaseUrl(option);
+
     updateApiData("endpoint", option + endpoint);
   };
 
@@ -56,11 +56,9 @@ const General: React.FC<GeneralProps> = ({
     { label: "Disabled", value: "disabled" },
   ];
 
-  const [selectedBaseUrl, setSelectedBaseUrl] = useState("");
-
-  const handleBaseUrlChange = (selectedBaseUrl: any) => {
-    setSelectedBaseUrl(selectedBaseUrl);
-  };
+  // const handleBaseUrlChange = (selectedBaseUrl: any) => {
+  //   setSelectedBaseUrl(selectedBaseUrl);
+  // };
 
   const handleSelectStatus = (selectedOption: string) => {
     updateApiData("status", selectedOption); // Update the status in apiData
@@ -125,7 +123,7 @@ const General: React.FC<GeneralProps> = ({
           type="text"
           id="endpoint"
           name="endpoint"
-          value={apiData.endpoint}
+          value={endpoint}
           onChange={handleEndpointChange}
           placeholder="/endpoint"
         />
