@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { usersData } from "./userData";
 import AddUser from "./AddUser";
 import Users from "./Users";
 import { User } from "../../interfaces/User";

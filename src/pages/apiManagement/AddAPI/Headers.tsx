@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { HeaderProps } from "../../../interfaces/Headers";
 import { HeadersData } from "../../../headers";
+import { FaPlus, FaRegTrashCan } from "react-icons/fa6";
 
 const Headers = ({ apiData, updateApiData, next }: any) => {
   const [newHeader, setNewHeader] = useState<HeaderProps>({
     name: "",
-    samples: [],
+    samples: [], // Use an array to display the available options
   });
-  const [selectedSample, setSelectedSample] = useState<string>("");
+  const [selectedSample, setSelectedSample] = useState<string>(""); // For storing the selected value
   const [error, setError] = useState("");
 
   const handleHeaderChange = (
@@ -22,11 +23,11 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
 
   const handleAddHeader = () => {
     if (newHeader.name && selectedSample) {
-      const updatedHeader = { ...newHeader, samples: [selectedSample] };
+      const updatedHeader = { ...newHeader, samples: selectedSample }; // Store selectedSample as a string
       updateApiData("headers", [...apiData.headers, updatedHeader]);
       setNewHeader({
         name: "",
-        samples: [],
+        samples: [], // Reset samples to an empty array
       });
       setSelectedSample("");
     }
@@ -50,7 +51,6 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
     if (apiData.headers.length > 0) {
       next();
     } else {
-      // Show error message
       setError("Please add at least one header");
     }
   };
@@ -78,26 +78,20 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
           <div className="inputs">
             <label>Category:</label>
             <select
-              value={header.samples[0]}
+              value={header.samples} // No longer an array
               onChange={(e) =>
-                handleHeaderChange(index, "samples", e.target.value.split(", "))
+                handleHeaderChange(index, "samples", e.target.value)
               }
               disabled
             >
               <option value="">Select Sample</option>
-              {header.samples.map((sample, i) => (
-                <option key={i} value={sample}>
-                  {sample}
-                </option>
-              ))}
+              <option value={header.samples}>{header.samples}</option>
             </select>
           </div>
-          <button
+          <FaRegTrashCan
             onClick={() => handleRemoveHeader(index)}
-            className="header-btn"
-          >
-            Remove
-          </button>
+            className="header_remove_icon"
+          />
         </div>
       ))}
 
@@ -112,7 +106,7 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
               );
               setNewHeader({
                 name: selectedHeader?.name || "",
-                samples: selectedHeader?.samples || [],
+                samples: selectedHeader?.samples || [], // Reset samples to available options
               });
               setSelectedSample("");
             }}
@@ -131,19 +125,17 @@ const Headers = ({ apiData, updateApiData, next }: any) => {
           <label>Header Value</label>
           <select
             value={selectedSample}
-            onChange={(e) => setSelectedSample(e.target.value)}
+            onChange={(e) => setSelectedSample(e.target.value)} // Store selected value
           >
             <option value="">Select Sample</option>
-            {newHeader.samples.map((sample, index) => (
+            {newHeader.samples.map((sample: string, index: number) => (
               <option key={index} value={sample}>
                 {sample}
               </option>
             ))}
           </select>
         </div>
-        <button onClick={handleAddHeader} className="header-btn">
-          Add Header
-        </button>
+        <FaPlus onClick={handleAddHeader} className="header_add_icon" />
       </div>
 
       <p style={{ textAlign: "center", color: "red" }}>{error}</p>

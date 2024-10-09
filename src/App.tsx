@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/sidebar/Sidebar";
 import Navbar from "./components/navbar/Navbar";
-import Login from "./pages/auth/Login"; // Add this import
+import Login from "./pages/auth/Login";
 import { RoutesData } from "./components/Routes/Routes";
 
 function App() {

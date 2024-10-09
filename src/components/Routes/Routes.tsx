@@ -5,7 +5,7 @@ import AuditLog from "../../pages/audit/AuditLog";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import Notifications from "../../pages/notifications/Notifications";
 import Reports from "../../pages/reports/Reports";
-import Settings from "../../pages/settings/Settings";
+import SettingsPage from "../../pages/settings/Index";
 import Support from "../../pages/support/Support";
 import UserManagement from "../../pages/Users/Index";
 
@@ -21,7 +21,7 @@ export const RoutesData = [
   { path: "/api-management", element: <APIManagementPage /> },
   { path: "/users", element: <UserManagement /> },
   { path: "/api-keys", element: <APIKeys /> },
-  { path: "/settings", element: <Settings /> },
+  { path: "/settings", element: <SettingsPage /> },
   { path: "/notifications", element: <Notifications /> },
   { path: "/reports", element: <Reports /> },
   { path: "/support", element: <Support /> },

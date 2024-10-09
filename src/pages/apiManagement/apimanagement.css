@@ -39,6 +39,7 @@ form {
 
 .inputs {
   display: flex;
+  flex: 1;
   flex-direction: column;
   margin-bottom: 1.25rem;
 }
@@ -112,6 +113,20 @@ select {
 .headers-container .input-flex .inputs {
   max-width: 500px;
   width: 100%;
+}
+
+.header_add_icon {
+  background: #4313ff;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 2.5rem;
+}
+
+.header_remove_icon {
+  background: white;
+  color: red;
+  font-size: 1.5rem;
 }
 
 .header-btn {
@@ -203,11 +218,4 @@ select {
 .queries-inputs {
   width: 100%;
   max-width: 500px;
-}
-
-@media screen and (max-width: 1440px) {
-  .add-header .inputs {
-    max-width: 320px;
-    width: 100%;
-  }
 }

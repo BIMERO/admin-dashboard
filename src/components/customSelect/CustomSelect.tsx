@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./customSelect.css";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
@@ -28,12 +28,29 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     defaultOption
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSelectOption = (option: Option) => {
     setSelectedOption(option);
     onSelect(option.value); // Use option.value instead of option directly
     setIsDropdownOpen(false);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="custom-select-container">
@@ -51,19 +68,21 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       </div>
 
       {isDropdownOpen && (
-        <ul className="dropdown-list">
-          {options.map((option, index) => (
-            <li
-              key={index}
-              className={`dropdown-item ${
-                option.value === selectedOption?.value ? "selected" : ""
-              }`}
-              onClick={() => handleSelectOption(option)}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
+        <div ref={dropdownRef}>
+          <ul className="dropdown-list">
+            {options.map((option, index) => (
+              <li
+                key={index}
+                className={`dropdown-item ${
+                  option.value === selectedOption?.value ? "selected" : ""
+                }`}
+                onClick={() => handleSelectOption(option)}
+              >
+                {option.label}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

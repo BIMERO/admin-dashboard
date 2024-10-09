@@ -6,7 +6,7 @@ interface ApiKey {
   baseUrl: string;
 }
 
-const Global = () => {
+const Global = ({ goBack, handleSaveSetting }: any) => {
   const [baseUrl, setBaseUrl] = useState(localStorage.getItem("baseUrl") || "");
   const [endpoints, setEndpoints] = useState<string[]>(() => {
     const storedEndpoints = localStorage.getItem("endpoints");
@@ -36,24 +36,24 @@ const Global = () => {
   const [baseUrlType, setBaseUrlType] = useState("live");
   const [error, setError] = useState("");
 
-  const addApiKey = () => {
-    // Validation: Ensure keyName and keyValue are not empty
-    if (!keyName || !keyValue) {
-      setError("Both key name and key value are required.");
-      return;
-    }
+  // const addApiKey = () => {
+  //   // Validation: Ensure keyName and keyValue are not empty
+  //   if (!keyName || !keyValue) {
+  //     setError("Both key name and key value are required.");
+  //     return;
+  //   }
 
-    // Add the new API key to the apiKeys array
-    setApiKeys([
-      ...apiKeys,
-      { key: keyName, value: keyValue, baseUrl: baseUrlType },
-    ]);
+  //   // Add the new API key to the apiKeys array
+  //   setApiKeys([
+  //     ...apiKeys,
+  //     { key: keyName, value: keyValue, baseUrl: baseUrlType },
+  //   ]);
 
-    // Clear input fields and errors after successful addition
-    setKeyName("");
-    setKeyValue("");
-    setError(""); // Clear the error message
-  };
+  //   // Clear input fields and errors after successful addition
+  //   setKeyName("");
+  //   setKeyValue("");
+  //   setError(""); // Clear the error message
+  // };
 
   const handleBaseUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBaseUrlType(event.target.value);
@@ -131,10 +131,6 @@ const Global = () => {
                 placeholder="Enter API key value"
               />
             </div>
-            {/* Button to add the API key */}
-            <button onClick={addApiKey} style={{ maxWidth: "fit-content" }}>
-              Add API Key
-            </button>
           </div>
 
           {error && <p style={{ color: "red" }}>{error}</p>}
