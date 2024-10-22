@@ -13,7 +13,7 @@ import moment from "moment";
 import EditUserForm from "./EditUserForm";
 import { User } from "../../interfaces/User";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
+import { CiEdit, CiMenuKebab } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import {
   deleteUser,
@@ -21,6 +21,7 @@ import {
   getEditUser,
   updateUserStatus,
 } from "../../config/apiService";
+import MUIDataTable from "mui-datatables";
 
 const Users = ({
   allusers,
@@ -101,6 +102,100 @@ const Users = ({
     setFilteredUsers(response.data);
   };
 
+  const columns = [
+    { name: "id", label: "User ID", options: { sort: true } },
+    {
+      name: "fullName",
+      label: "Full Name",
+      options: {
+        customBodyRender: (value: any, tableMeta: any) => {
+          const user = allusers[tableMeta.rowIndex];
+          return `${user.first_name} ${user.last_name}`;
+        },
+      },
+    },
+    { name: "email", label: "Email", options: { sort: true } },
+    { name: "type", label: "Role", options: { sort: true } },
+    { name: "status", label: "Status", options: { sort: true } },
+    {
+      name: "lastLogin",
+      label: "Last Login",
+      options: {
+        customBodyRender: (value: any) =>
+          moment(value).format("YYYY/MM/DD, HH:mm"),
+      },
+    },
+
+    {
+      name: "enable",
+      label: "Enable",
+      options: {
+        customBodyRender: (value: any, tableMeta: any) => {
+          const user = allusers[tableMeta.rowIndex];
+          return (
+            <div className="toggle-switch">
+              <input
+                type="checkbox"
+                name={`check-${user.id}`}
+                id={`check-${user.id}`}
+                checked={user.status === "active"}
+                onChange={() => handleToggle(user.id, user.status)}
+              />
+              <label
+                htmlFor={`check-${user.id}`}
+                className="toggle-btn"
+              ></label>
+            </div>
+          );
+        },
+      },
+    },
+
+    {
+      name: "action",
+      label: "Action",
+      options: {
+        customBodyRender: (value: any, tableMeta: any) => {
+          const user = allusers[tableMeta.rowIndex];
+          return (
+            <div
+              className="action-btn"
+              onClick={() => handleDropdownToggle(user.id)}
+            >
+              <CiMenuKebab style={{ fontSize: "1.5rem" }} />
+              {dropdown === user.id && (
+                <div className="dropdown">
+                  <p onClick={() => handleEdit(user.id)}>
+                    <CiEdit />
+                    Edit
+                  </p>
+                  <p
+                    onClick={() => handleDelete(user.id)}
+                    style={{ color: "red" }}
+                  >
+                    <RiDeleteBin6Line />
+                    Delete
+                  </p>
+                </div>
+              )}
+            </div>
+          );
+        },
+      },
+    },
+  ];
+
+  const tableData = allusers.map((user) => ({
+    id: user.id,
+    name: `${user.first_name} ${user.last_name}}`,
+    email: user.email,
+    type: user.type,
+    status: user.status,
+    lastLogin: user.lastLogin,
+    action: "",
+    enable: "",
+  }));
+
   return (
     <div style={{ position: "relative" }}>
       <section>
@@ -119,7 +214,7 @@ const Users = ({
             </button>
           </div>
 
-          <div className="filters">
+          {/* <div className="filters">
             <div className="inputs">
               <input
                 type="text"
@@ -154,126 +249,20 @@ const Users = ({
               />
             </div>
             <button onClick={handleFilter}>Filter</button>
-          </div>
+          </div> */}
 
-          <div className="table">
-            <TableContainer>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      align="left"
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-                    >
-                      User ID
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-                    >
-                      Full Name
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-                    >
-                      Email
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-                    >
-                      Role
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-                    >
-                      Status
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-                    >
-                      Last Login
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-                    >
-                      Action
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-                    >
-                      Enable
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {allusers.map((user) => (
-                    <TableRow key={user.id}>
-                      <TableCell align="left">{user.id}</TableCell>
-                      <TableCell align="left">{`${user.first_name} ${user.last_name}`}</TableCell>
-                      <TableCell align="left">{user.email}</TableCell>
-                      <TableCell align="left">{user.type}</TableCell>
-                      <TableCell align="left">{user.status}</TableCell>
-                      <TableCell align="left">
-                        {moment(user.lastLogin).format("YYYY/MM/DD, HH:mm")}
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        style={{
-                          position: "relative",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          color: "#4318ff",
-                          fontWeight: "bold",
-                        }}
-                        onClick={() => handleDropdownToggle(user.id)}
-                      >
-                        View Details{" "}
-                        <MdKeyboardArrowDown style={{ fontSize: "1.25rem" }} />
-                        {dropdown === user.id && (
-                          <div className="dropdown">
-                            <p onClick={() => handleEdit(user.id)}>
-                              <CiEdit />
-                              Edit
-                            </p>
-                            <p
-                              onClick={() => handleDelete(user.id)}
-                              style={{
-                                color: "red",
-                              }}
-                            >
-                              <RiDeleteBin6Line />
-                              Delete
-                            </p>
-                          </div>
-                        )}
-                      </TableCell>
-                      <TableCell align="left">
-                        <div className="toggle-switch">
-                          <input
-                            type="checkbox"
-                            name={`check-${user.id}`}
-                            id={`check-${user.id}`}
-                            checked={user.status === "active"}
-                            onChange={() => handleToggle(user.id, user.status)}
-                          />
-                          <label
-                            htmlFor={`check-${user.id}`}
-                            className="toggle-btn"
-                          ></label>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+          <div className="users-table">
+            <MUIDataTable
+              title={""}
+              data={tableData}
+              columns={columns}
+              options={{
+                filterType: "checkbox",
+                responsive: "standard",
+                selectableRows: "none",
+                elevation: 0,
+              }}
+            />
           </div>
         </div>
       </section>

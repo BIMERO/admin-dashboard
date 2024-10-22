@@ -71,6 +71,15 @@
   border-radius: 0.5rem;
 }
 
+.action-btn {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
 .dropdown-list li {
   cursor: pointer;
   font-size: 14px;
@@ -78,6 +87,18 @@
 
 .dropdown-list li:hover {
   background: #f5f5f5;
+}
+
+.users-table {
+  background-color: #fbfbfb;
+}
+
+.tss-1h9t3sl-MUIDataTableHeadCell-sortAction {
+  font-weight: 600;
+}
+
+.css-ee20y-MuiPaper-root {
+  background-color: #fbfbfb !important;
 }
 
 .add-user form .save-btn {

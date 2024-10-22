@@ -1,0 +1,24 @@
+.alert-card {
+  background: #fbfbfb;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 1px 1px 4px rgba(1, 1, 1, 0.1);
+}
+
+.alert-card-num {
+  background: #4313ff;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { notificationsData } from "./notificationsData";
 import moment from "moment";
+import { CiMenuKebab } from "react-icons/ci";
+import "./notifications.css";
 
 const Notifications = () => {
   return (
@@ -18,14 +20,10 @@ const Notifications = () => {
         <h2>
           Alerts & Notifications <span>{notificationsData.length}</span>
         </h2>
-        <button>
-          <FaUserPlus />
-          Add New Notification
-        </button>
       </div>
       <div className="user-mgt">
-        <div className="table">
-          <TableContainer>
+        <div className="">
+          {/* <TableContainer>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -111,21 +109,25 @@ const Notifications = () => {
                       }}
                     >
                       View Details{" "}
-                      {/* <MdKeyboardArrowDown style={{ fontSize: "1.25rem" }} />
-                      {dropdown === user.id && (
-                        <>
-                          <div className="dropdown">
-                            <p onClick={() => handleEdit(user)}>Edit</p>
-                            <p onClick={() => handleDelete(user.id)}>Delete</p>
-                          </div>
-                        </>
-                      )} */}
+                      
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
+          </TableContainer> */}
+
+          {notificationsData.map((alert) => (
+            <div className="alert-card">
+              <span className="alert-card-num"> {alert.id} </span>
+              <span>{alert.message}</span>
+              <span>{alert.type}</span>
+              <span>{alert.recipients}</span>
+              <span>{alert.status}</span>
+              <span>{alert.deliveryMethod}</span>
+              <span>{moment(alert.timestamp).format("YYYY/MM/DD, HH:mm")}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

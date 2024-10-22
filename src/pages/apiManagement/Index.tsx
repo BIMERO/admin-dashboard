@@ -7,7 +7,8 @@ import { getApis } from "../../config/apiService";
 import { APIs } from "../../interfaces/APIs";
 
 const APIManagementPage = () => {
-  const [allAPIs, setAllAPIs] = useState<APIs[]>([]);
+  // const [allAPIs, setAllAPIs] = useState<APIs[]>([]);
+  const [allAPIs, setAllAPIs] = useState(ApiData);
   const [addAPI, setAddAPI] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

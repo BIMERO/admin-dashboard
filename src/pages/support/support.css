@@ -40,7 +40,7 @@
   align-items: center;
   min-height: 100px;
   gap: 1rem;
-  max-width: 520px;
+  flex: 1;
 }
 
 .documentation svg {
@@ -63,7 +63,14 @@
   flex-wrap: wrap;
 }
 
-.support-container .input-flex .inputs {
-  width: 100%;
-  max-width: 520px;
+.support-channels h4 {
+  margin-bottom: 1.125rem;
+  font-size: 1.5rem;
+}
+
+.support-channels .contact-form {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
 }

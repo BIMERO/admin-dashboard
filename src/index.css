@@ -41,8 +41,8 @@ a {
   font-weight: 600;
   background: rgba(96, 175, 254, 0.1);
   text-align: center;
-  border-radius: 32px;
-  padding: 2px 0;
+  border-radius: 2rem;
+  padding: 2px 0.5rem;
   text-transform: uppercase;
 }
 
@@ -51,8 +51,8 @@ a {
   font-weight: 600;
   background: rgba(74, 203, 145, 0.1);
   text-align: center;
-  border-radius: 32px;
-  padding: 2px 0;
+  border-radius: 2rem;
+  padding: 2px 0.5rem;
   text-transform: uppercase;
 }
 
@@ -61,8 +61,8 @@ a {
   font-weight: 600;
   background: rgba(252, 161, 47, 0.1);
   text-align: center;
-  border-radius: 32px;
-  padding: 2px 0;
+  border-radius: 2rem;
+  padding: 2px 0.5rem;
   text-transform: uppercase;
 }
 
@@ -71,8 +71,8 @@ a {
   font-weight: 600;
   background: rgba(250, 62, 61, 0.1);
   text-align: center;
-  border-radius: 32px;
-  padding: 2px 0;
+  border-radius: 2rem;
+  padding: 2px 0.5rem;
   text-transform: uppercase;
 }
 
@@ -81,8 +81,8 @@ a {
   font-weight: 600;
   background: rgba(79, 226, 194, 0.1);
   text-align: center;
-  border-radius: 32px;
-  padding: 2px 0;
+  border-radius: 2rem;
+  padding: 2px 0.5rem;
   text-transform: uppercase;
 }
 
@@ -91,8 +91,8 @@ a {
   font-weight: 600;
   background: rgba(0, 199, 129, 0.1);
   text-align: center;
-  border-radius: 32px;
-  padding: 2px 0;
+  border-radius: 2rem;
+  padding: 2px 0.5rem;
 }
 
 .failed {
@@ -100,6 +100,6 @@ a {
   font-weight: 600;
   background: rgba(255, 64, 64, 0.1);
   text-align: center;
-  border-radius: 32px;
-  padding: 2px 0;
+  border-radius: 2rem;
+  padding: 2px 0.5rem;
 }

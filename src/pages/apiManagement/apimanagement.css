@@ -7,8 +7,9 @@
   padding: 1rem;
   border-radius: 0.5rem;
   line-height: 1.5rem;
-  width: 100%;
-  max-width: 120px;
+  /* width: 100%; */
+  color: #4313ff;
+  max-width: 130px;
   position: absolute;
   z-index: 10;
   top: 2.5rem;
@@ -22,7 +23,12 @@
 .table_container {
   background: white;
   margin-top: 1rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .edit-form {
@@ -218,4 +224,8 @@ select {
 .queries-inputs {
   width: 100%;
   max-width: 500px;
+}
+
+.css-ee20y-MuiPaper-root {
+  width: 100%;
 }

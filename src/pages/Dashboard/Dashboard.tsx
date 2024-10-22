@@ -1,17 +1,9 @@
 import React, { useState } from "react";
 import "./dashboard.css";
 import Header from "./Header";
-import { dashboardData } from "../../mockdata"; // Make sure this path is correct
+import { dashboardData } from "../../mockdata";
 import ReactApexChart from "react-apexcharts";
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import MUIDataTable from "mui-datatables";
 
 interface ApiUsage {
   date: string;
@@ -38,7 +30,7 @@ const Dashboard: React.FC = () => {
 
   const [chartOptions] = useState<ApexCharts.ApexOptions>({
     chart: {
-      type: "area" as const, // Add `as const` to ensure it's treated as a specific string
+      type: "area" as const,
       height: 300,
       zoom: { enabled: false },
     },
@@ -67,6 +59,20 @@ const Dashboard: React.FC = () => {
     },
   ]);
 
+  const columns = [
+    { name: "endpoint", label: "Endpoint" },
+    { name: "totalCalls", label: "Total Calls" },
+    { name: "avgResponseTime", label: "Avg. Response Time" },
+    { name: "errorRate", label: "Error Rate" },
+  ];
+
+  const topEndpointsData = data.topEndpoints.map((endpoint) => ({
+    endpoint: endpoint.endpoint,
+    totalCalls: endpoint.totalCalls,
+    avgResponseTime: endpoint.avgResponseTime,
+    errorRate: endpoint.errorRate,
+  }));
+
   return (
     <div className="container">
       <Header />
@@ -87,39 +93,20 @@ const Dashboard: React.FC = () => {
             </div>
           </section>
 
-          <section className="top-endpoints">
+          {/* <section className="top-endpoints">
             <h3 style={{ marginBottom: "1rem" }}>Top Endpoints</h3>
-
-            <TableContainer component={Paper}>
-              <Table sx={{}} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">Endpoint</TableCell>
-                    <TableCell align="left">Total Calls</TableCell>
-                    <TableCell align="left">Avg. Response Time</TableCell>
-                    <TableCell align="left">Error Rate</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {data.topEndpoints.map((endpoint) => (
-                    <TableRow
-                      key={endpoint.endpoint}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                    >
-                      <TableCell align="left">{endpoint.endpoint}</TableCell>
-                      <TableCell align="left">{endpoint.totalCalls}</TableCell>
-                      <TableCell align="left">
-                        {endpoint.avgResponseTime}
-                      </TableCell>
-                      <TableCell align="left">{endpoint.errorRate}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </section>
+          </section> */}
+          <MUIDataTable
+            title={"Top Endpoints"}
+            data={topEndpointsData}
+            columns={columns}
+            options={{
+              filterType: "checkbox",
+              responsive: "vertical",
+              selectableRows: "none",
+              elevation: 0,
+            }}
+          />
         </div>
       </div>
     </div>

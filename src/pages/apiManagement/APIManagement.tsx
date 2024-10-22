@@ -1,20 +1,14 @@
 import React, { useState } from "react";
 import "./apimanagement.css";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { MdKeyboardArrowDown } from "react-icons/md";
 import EditForm from "./EditForm";
 import { FaUserPlus } from "react-icons/fa6";
-import { HeaderProps } from "../../interfaces/Headers";
-import { Endpoints } from "../../interfaces/Endpoint";
 import { getEditApi } from "../../config/apiService";
 import { APIs } from "../../interfaces/APIs";
+import MUIDataTable, { TableBody, TableHead } from "mui-datatables";
+import { CiMenuKebab } from "react-icons/ci";
+import { Table, TableCell, TableContainer, TableRow } from "@mui/material";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import Modal from "../../components/Modal/Modal";
 
 const APIManagement = ({
   allAPIs,
@@ -30,6 +24,7 @@ const APIManagement = ({
   const [dropdown, setDropdown] = useState<number | null>(null);
   const [selectedAPI, setSelectedAPI] = useState<APIs | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleDropdownToggle = (userId: number) => {
     setDropdown(dropdown === userId ? null : userId);
@@ -54,6 +49,87 @@ const APIManagement = ({
     setDropdown(null);
   };
 
+  const columns = [
+    {
+      name: "endpoint",
+      label: "Endpoint",
+      options: {
+        filter: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth: "200px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          },
+        }),
+      },
+    },
+    {
+      name: "method",
+      label: "Method",
+      options: {
+        filter: true,
+        customBodyRender: (value: string) => {
+          const methodClass =
+            value === "get"
+              ? "get-method"
+              : value === "put"
+              ? "put-method"
+              : value === "post"
+              ? "post-method"
+              : value === "delete"
+              ? "delete-method"
+              : value === "patch"
+              ? "patch-method"
+              : "";
+
+          return <span className={methodClass}>{value.toUpperCase()}</span>;
+        },
+        setCellProps: () => ({ style: { fontWeight: 600 } }),
+      },
+    },
+    {
+      name: "description",
+      label: "Description",
+      options: {
+        filter: false,
+      },
+    },
+    {
+      name: "enabled",
+      label: "Enabled",
+      options: {
+        customBodyRender: (value: string) =>
+          value === "enabled" ? "False" : "True",
+      },
+    },
+    {
+      name: "action",
+      label: "Action",
+      options: {
+        customBodyRender: (value: any, tableMeta: any) => {
+          const endpointId = tableMeta.rowData[0];
+          return (
+            <div
+              onClick={() => handleDropdownToggle(endpointId)}
+              className="action-btn"
+            >
+              <CiMenuKebab style={{ fontSize: "1.5rem" }} />
+              {dropdown === endpointId && (
+                <div className="dropdown">
+                  <p onClick={() => handleApiEdit(endpointId)}>Edit</p>
+                  <p onClick={() => handleDelete(endpointId)}>Delete</p>
+                  <p onClick={() => setShowModal(true)}>View</p>
+                </div>
+              )}
+            </div>
+          );
+        },
+        setCellProps: () => ({ style: { fontWeight: 600 } }),
+      },
+    },
+  ];
+
   return (
     <>
       <section className="api_management">
@@ -72,7 +148,7 @@ const APIManagement = ({
           </button>
         </div>
         <div className="table_container">
-          {loading ? (
+          {/* {loading ? (
             <>Loading...</>
           ) : (
             <>
@@ -198,6 +274,42 @@ const APIManagement = ({
                 </>
               )}
             </>
+          )} */}
+
+          {loading ? (
+            <>Loading...</>
+          ) : (
+            <>
+              {allAPIs.length > 0 ? (
+                <MUIDataTable
+                  title={""}
+                  data={allAPIs.map((endpoint: any) => ({
+                    endpoint: endpoint.endpoint,
+                    method: endpoint.method,
+                    description: endpoint.description,
+                    enabled: endpoint.enabled,
+                    action: endpoint.id, // For actions like View/Edit/Delete
+                  }))}
+                  columns={columns}
+                  options={{
+                    filterType: "checkbox",
+                    responsive: "vertical",
+                    selectableRows: "none",
+                    download: false,
+                    print: false,
+                    viewColumns: false,
+                    elevation: 0,
+                    search: false,
+                    sort: false,
+                    filter: false,
+                  }}
+                />
+              ) : (
+                <div>
+                  <p>No APIs found</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
@@ -209,6 +321,8 @@ const APIManagement = ({
           onClose={() => setShowEditModal(false)}
         />
       )}
+
+      {showModal && <Modal />}
     </>
   );
 };

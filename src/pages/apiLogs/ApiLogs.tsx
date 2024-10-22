@@ -20,6 +20,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import CustomSelect from "../../components/customSelect/CustomSelect";
 import { MdOutlineFileDownload } from "react-icons/md";
 import MakeCall from "./MakeCall";
+import MUIDataTable from "mui-datatables";
+import { CiMenuKebab } from "react-icons/ci";
 
 const ApiLogs = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,9 +34,9 @@ const ApiLogs = () => {
   const [makeCallModal, setMakeCallModal] = useState(false);
 
   const filteredLogs = ApiData.filter((log) => {
-    const withinDateRange =
-      (!startDate || new Date(log.timeStamp) >= startDate) &&
-      (!endDate || new Date(log.timeStamp) <= endDate);
+    const withinDateRange = true;
+    //   (!startDate || new Date(log.timeStamp) >= startDate) &&
+    //   (!endDate || new Date(log.timeStamp) <= endDate);
 
     return (
       log.endpoint.includes(searchQuery) &&
@@ -73,6 +75,103 @@ const ApiLogs = () => {
   const handleCloseCall = () => {
     setMakeCallModal(false);
   };
+
+  const columns = [
+    {
+      name: "id",
+      label: "User ID",
+      options: {
+        sort: true,
+        setCellProps: () => ({ style: { fontWeight: 700 } }),
+      },
+    },
+    {
+      name: "endpoint",
+      label: "Endpoints",
+      options: {
+        sort: true,
+      },
+    },
+    {
+      name: "method",
+      label: "Method",
+      options: {
+        customBodyRender: (value: string) => {
+          const methodClass =
+            value === "GET"
+              ? "get-method"
+              : value === "PUT"
+              ? "put-method"
+              : value === "POST"
+              ? "post-method"
+              : value === "DELETE"
+              ? "delete-method"
+              : value === "PATCH"
+              ? "patch-method"
+              : "";
+
+          return <span className={methodClass}>{value}</span>;
+        },
+      },
+    },
+    {
+      name: "responseTime",
+      label: "Response Time",
+      options: {
+        customBodyRender: (value: string) => (
+          <p style={{ textAlign: "center" }}>{value}</p>
+        ),
+      },
+    },
+    {
+      name: "status",
+      label: "Status",
+      options: {
+        customBodyRender: (value: string) => {
+          const statusClass =
+            value === "Success"
+              ? "success"
+              : value === "Failed"
+              ? "failed"
+              : "";
+
+          return <span className={statusClass}>{value}</span>;
+        },
+      },
+    },
+    {
+      name: "timestamp",
+      label: "Last Login",
+      options: {
+        customBodyRender: (value: string) =>
+          moment(value).format("YYYY/MM/DD, HH:mm"),
+      },
+    },
+    {
+      name: "action",
+      label: "Action",
+      options: {
+        customBodyRender: (value: any, tableMeta: any) => {
+          const user = filteredLogs[tableMeta.rowIndex];
+          return (
+            <div className="action-btn" onClick={() => handleView(user)}>
+              <CiMenuKebab style={{ fontSize: "1.5rem" }} />
+            </div>
+          );
+        },
+      },
+    },
+  ];
+
+  const data = filteredLogs.map((log) => ({
+    id: log.id,
+    endpoint: log.endpoint,
+    method: log.method,
+    responseTime: "", // log.responseTime,
+    status: log.status,
+    timestamp: "", // log.timeStamp,
+    action: "",
+  }));
 
   return (
     <>
@@ -151,8 +250,8 @@ const ApiLogs = () => {
           </button>
         </div>
 
-        <div className="table">
-          <TableContainer>
+        <div className="users-table">
+          {/* <TableContainer>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -270,7 +369,25 @@ const ApiLogs = () => {
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
+          </TableContainer> */}
+
+          <MUIDataTable
+            title={""}
+            data={data}
+            columns={columns}
+            options={{
+              filterType: "checkbox",
+              responsive: "vertical",
+              selectableRows: "none",
+              download: false,
+              print: false,
+              viewColumns: false,
+              elevation: 0,
+              search: false,
+              sort: false,
+              filter: false,
+            }}
+          />
         </div>
       </section>
 

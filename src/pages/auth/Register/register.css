@@ -1,0 +1,91 @@
+.register {
+  background: #f4f7fe;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.register_package {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+}
+
+.package-type {
+  background: white;
+  box-shadow: 0px 0px 12px rgb(198, 217, 202);
+  width: 100%;
+  max-width: 200px;
+  margin: auto;
+  margin-top: -3.75rem;
+  margin-bottom: 2.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.standard {
+  box-shadow: 0px 0px 12px rgb(192, 221, 227);
+}
+
+.premium {
+  box-shadow: 0px 0px 12px rgb(242, 216, 206);
+}
+
+.package-type h1 {
+  margin-bottom: 0.5rem;
+  color: #299a42;
+  font-size: 2rem;
+}
+
+.standard h1 {
+  color: #0c85ad;
+}
+
+.premium h1 {
+  color: #d15220;
+}
+
+.package-type p {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.register_package ul {
+  line-height: 3.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.register_package ul li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.register_package ul li svg {
+  color: green;
+  font-size: 1.5rem;
+}
+
+.register-btn {
+  border: none;
+  outline: none;
+  background: #299a42;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  margin: auto;
+}
+
+.standard-btn {
+  background: #0c85ad;
+}
+
+.premium-btn {
+  background: #d15220;
+}
